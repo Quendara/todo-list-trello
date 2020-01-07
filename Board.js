@@ -5,13 +5,6 @@ import ReactDOM from "react-dom";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-// fake data generator
-const getItems = (count, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k + offset}`,
-    content: `Item to  ${k + offset}`
-  }));
-
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -46,6 +39,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
   fontSize: 14,
+  // display: "block",
 
   // change background colour if dragging
   background: isDragging ? "lightgreen" : "white",
@@ -62,36 +56,15 @@ const getListStyle = isDraggingOver => ({
 });
 
 class Board extends Component {
-  constructor() {
-    this.state = {
-      lists: [
-        {
-          title: "Open",
-          items: getItems(10)
-        },
-        {
-          title: "Progress",
-          items: getItems(5, 10)
-        }
-      ]
-
-      // items2: getItems(5, 10),
-      // items3: getItems(5, 20)
-    };
-
-    /**
-     * A semi-generic way to handle multiple lists. Matches
-     * the IDs of the droppable container to the names of the
-     * source arrays stored in the state.
-     */
-    this.id2List = {
-      droppable1: "items1",
-      droppable2: "items2",
-      droppable3: "items3"
-    };
+  constructor(probs) {
+    super(probs);
+    this.state = { lists: probs.list };
   }
 
-  getList = id => this.state[this.id2List[id]];
+  getList = id => {
+    return this.state.lists[+id].items;
+    // return // this.state[this.id2List[id]]
+  };
 
   onDragEnd = result => {
     const { source, destination } = result;
@@ -102,36 +75,23 @@ class Board extends Component {
     }
 
     if (source.droppableId === destination.droppableId) {
+      // called when dragged within a list
+      console.log("reorder");
       const items = reorder(
         this.getList(source.droppableId),
         source.index,
         destination.index
       );
 
-      // let state = { items };
+      console.log("droppableId : " + source.droppableId);
+      // console.log(items);
 
-      // this.state.items[1].name = 'updated field name'
-      // this.forceUpdate()
-
-      console.log(+source.droppableId);
-
-      // this.state.items[ +source.droppableId ].items = items;
-      // this.forceUpdate()
-
-      // state[ this.lists[ source.droppableId ] ] = {}
-      // state[ this.lists[ source.droppableId ] ]['items']  = items
-
-      // this.setState(state);
-
-      // val[this.id2List[source.droppableId]] = items;
-      // this.setState(val);
-
-      // ...
-      // if (source.droppableId === 'droppable3') {
-      //     state = { items3: items };
-      // }
-      // this.setState(state);
+      this.state.lists[+source.droppableId].items = items;
+      this.forceUpdate();
     } else {
+      // called when dragged from list to list
+      console.log("Move");
+
       const result = move(
         this.getList(source.droppableId),
         this.getList(destination.droppableId),
@@ -142,13 +102,16 @@ class Board extends Component {
       console.log(result);
 
       // map the fechted items to the state . list
-      let val = {};
-      val[this.id2List[source.droppableId]] = result[source.droppableId];
-      val[this.id2List[destination.droppableId]] =
-        result[destination.droppableId];
+      // let val = {};
+      // val[this.id2List[source.droppableId]] = result[source.droppableId];
+      // val[this.id2List[destination.droppableId]] = result[destination.droppableId];
+      // console.log(val);
+      // this.setState(val);
 
-      console.log(val);
-      this.setState(val);
+      this.state.lists[+source.droppableId].items = result[+source.droppableId];
+      this.state.lists[+destination.droppableId].items =
+        result[+destination.droppableId];
+      this.forceUpdate();
     }
   };
 
@@ -168,7 +131,6 @@ class Board extends Component {
                 style={getListStyle(snapshot.isDraggingOver)}
               >
                 <h4>
-                  {" "}
                   {listitem.title} <small>{listitem.items.length}</small>{" "}
                 </h4>
                 <hr />
@@ -186,7 +148,22 @@ class Board extends Component {
                           provided.draggableProps.style
                         )}
                       >
-                        {item.content}
+                        [{item.id}] <b>{item.content}</b>
+                        {item.desctiption}
+                        <div className="container-fluid">
+                          <div className="row">
+                            <div className="col-sm-9">
+                              <span className="badge badge-light pull-right">
+                                {item.epic}
+                              </span>
+                            </div>
+                            <div className="col-sm-3">
+                              <span className="badge badge-light pull-right">
+                                {item.effort}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     )}
                   </Draggable>
