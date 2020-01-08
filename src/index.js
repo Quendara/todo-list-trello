@@ -36,41 +36,34 @@ class App extends Component {
   constructor() {
     super();
 
-    const flatlist = getItems(10)
+    // const flatlist = getItems(10)
 
-    console.log( flatlist )
-    const groupedList = groupBy( flatlist, "status" ) 
+    // console.log( flatlist )
+    // const groupedList = groupBy( flatlist, "status" ) 
 
-    console.log( groupedList )
-    // console.log( uniq( flatlist.status ) ) 
+    // console.log( groupedList )
+    // const groups = ( uniq( flatlist.status ) ) 
 
-    this.lists = []
+    // this.lists = []
 
-     map( groupedList, function (group, index){
-                                        // <div key={index} className="alert alert-success">{message.text}</div>
-                                        console.log( index )
-                                        console.log( "group : " + group )
+    // flatlist.map((listitem, index) => {
 
-                                        this.lists.push( { title: index, items:[] })
-
-                                    })
+    // })
     
-
-
-    // this.lists = [
-    //   {
-    //     title: "Open",
-    //     items: getItems(10)
-    //   },
-    //   {
-    //     title: "Progress",
-    //     items: getItems(5, 10)
-    //   },
-    //   {
-    //     title: "Done",
-    //     items: getItems(5, 20)
-    //   }
-    // ]; // lists
+    this.lists = [
+      {
+        title: "Open",
+        items: getItems(10)
+      },
+      {
+        title: "Progress",
+        items: getItems(5, 10)
+      },
+      {
+        title: "Done",
+        items: getItems(5, 20)
+      }
+    ]; // lists
   }
 
   componentDidMount() {  }
