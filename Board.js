@@ -48,6 +48,10 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle
 });
 
+const sumEffort = (arr) => {
+
+}
+
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "#F1F1F1",
   padding: grid,
@@ -148,18 +152,35 @@ class Board extends Component {
                           provided.draggableProps.style
                         )}
                       >
-                        [{item.id}] <b>{item.content}</b>
-                        {item.desctiption}
+                        
                         <div className="container-fluid">
                           <div className="row">
-                            <div className="col-sm-9">
+                          
+                            <div className="col-sm-9">{item.id}</div>
+        <div className="col-sm-3">
                               <span className="badge badge-light pull-right">
+                                {item.effort}
+                              </span>
+                            </div>                            
+
+                          </div>
+                           <div className="row">
+                            <div className="col-sm-12"><b>{item.summary}</b></div>
+                          </div>
+
+                          
+                          <div className="row">
+                            <div className="col-sm-12">{item.desctiption}</div>
+                          </div>
+                          <div className="row">
+                            <div className="col-sm-9">
+                              <span className="badge badge-primary pull-right">
                                 {item.epic}
                               </span>
                             </div>
                             <div className="col-sm-3">
                               <span className="badge badge-light pull-right">
-                                {item.effort}
+                                x
                               </span>
                             </div>
                           </div>
