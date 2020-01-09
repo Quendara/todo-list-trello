@@ -73,8 +73,10 @@ class FileOpen extends Component {
     const reader = new FileReader();
     reader.onload = async e => {
       const text = e.target.result;
+      
+      console.log("showFile");
       console.log(text);
-      alert(text);
+      // alert(text);
       messageService.sendMessage(text);
     };
     reader.readAsText(e.target.files[0]);
@@ -92,15 +94,16 @@ class FileOpen extends Component {
 export default App;
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(probs) {
+    super(probs);
 
-    const flatlist = getItems(10);
-    // testCSV(flatlist);
+    this.state = {
+      lists: []
+    };
+    this.subscription = null;
 
-    this.state.lists = [];
-
-    this.setJsonData(flatlist);
+    // const flatlist = getItems(10);
+    // this.setJsonData(flatlist);
 
     // this.lists = [
     //   {
@@ -112,45 +115,52 @@ class App extends Component {
   }
 
   setCSVData(csv) {
+    console.log(  "setCSVData" )
+    console.log(  csv )
+    const flatlist = csvSoJson(csv);
 
-    const flatlist = csvSoJson( csv )
-    this.setJsonData(flatlist)
+    console.log(  "setJsonData" )
+    console.log(  flatlist )
+
+    this.setJsonData(flatlist);
   }
 
+  setJsonData(flatlist) {
 
-   setJsonData(flatlist) {
+    const groupBy = "status";
+    // const groupedList = groupBy( flatlist, groupBy )
+    const groups = storyAttributes[groupBy];
+    // create groups / colums
+    groups.map((item, index) => {
+      this.state.lists.push({ title: item, items: [] });
+    });
+    // add items to the columns
+    flatlist.map((listitem, index) => {
+      const groupItem = listitem[groupBy];
+      const colIdx = groups.indexOf(groupItem);
+      // push items to the correct column
+      if (colIdx >= 0) {
+        this.state.lists[colIdx].items.push(listitem);
+      } else {
+        console.warn("Item Ignored");
+        console.warn(listitem); 
+      } 
+    });
 
-    // const groupBy = "start";
-    // // const groupedList = groupBy( flatlist, groupBy )
-
-    // const groups = storyAttributes[groupBy];
-
-    // // create groups / colums
-    // groups.map((item, index) => {
-    //   this.state.lists.push({ title: item, items: [] });
-    // });
- 
-    // // add items to the columns
-    // flatlist.map((listitem, index) => {
-    //   const groupItem = listitem[groupBy];
-    //   const colIdx = groups.indexOf(groupItem);
-
-    //   // push items to the correct column
-    //   if (colIdx >= 0) {
-    //     this.state.lists[colIdx].items.push(listitem);
-    //   } else {
-    //     console.warn("Item Ignored");
-    //     console.warn(listitem);
-    //   }
-    // });
-  }
+    this.forceUpdate();
+  } 
 
   componentDidMount() {
     // subscribe to home component messages
     this.subscription = messageService.getMessage().subscribe(message => {
-      if (message) {
+      if ( message)  {
         // add message to local state if not empty
-        this.setCSVData( message )
+
+        console.log("componentDidMount recieved message");
+        console.log(message);
+
+        
+        this.setCSVData( message.text )
         // this.setState({ messages: [...this.state.messages, message] });
       } else {
         // clear messages when empty message received
@@ -161,11 +171,13 @@ class App extends Component {
 
   render() {
     // <HomePage />
+    // <MessageReciever />
+    // 
+
     return (
       <div>
+        <FileOpen />
         <div className="container text-center">
-          <MessageReciever />
-          <FileOpen />
           <div className="row">
             <Board list={this.state.lists} />
           </div>
