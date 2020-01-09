@@ -52,7 +52,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 const sumEffort = (arr) => {
   let sum = 0
   arr.map((item, index) => {
-    sum += item.effort
+    sum += +item.effort
   })
   return sum
 }
