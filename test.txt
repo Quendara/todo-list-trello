@@ -1,0 +1,11 @@
+id,summary,description,effort,epic,version,prio,status,start
+"JIRA-0","Item to  0","As user i want 0, so that ...",3,"epic4","v2.0","0","Open","Q4"
+"JIRA-1","Item to  1","As user i want 1, so that ...",3,"epic4","v2.0","2","Open","Q3"
+"JIRA-2","Item to  2","As user i want 2, so that ...",3,"epic1","v1.1","0","Done","Q2"
+"JIRA-3","Item to  3","As user i want 3, so that ...",3,"epic1","v1.0","0","Progress","Q2"
+"JIRA-4","Item to  4","As user i want 4, so that ...",3,"epic4","v1.0","2","Progress","Q3"
+"JIRA-5","Item to  5","As user i want 5, so that ...",3,"epic4","v2.0","0","Progress","Q1"
+"JIRA-6","Item to  6","As user i want 6, so that ...",3,"epic2","v1.0","5","Verificatin","Q2"
+"JIRA-7","Item to  7","As user i want 7, so that ...",3,"epic2","v1.0","2","Progress","Q4"
+"JIRA-8","Item to  8","As user i want 8, so that ...",3,"epic2","v1.1","10","Open","Q3"
+"JIRA-9","Item to  9","As user i want 9, so that ...",3,"epic2","v1.1","5","Done","Q1"
