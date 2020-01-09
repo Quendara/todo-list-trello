@@ -39,6 +39,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
   fontSize: 14,
+  textAlign: "left",
   // display: "block",
 
   // change background colour if dragging
@@ -49,7 +50,11 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 const sumEffort = (arr) => {
-
+  let sum = 0
+  arr.map((item, index) => {
+    sum += item.effort
+  })
+  return sum
 }
 
 const getListStyle = isDraggingOver => ({
@@ -134,9 +139,20 @@ class Board extends Component {
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
               >
-                <h4>
-                  {listitem.title} <small>{listitem.items.length}</small>{" "}
-                </h4>
+
+                <div className="row">
+
+                  <div className="col-sm-9">
+                    <b>
+                      {listitem.title}
+                    </b>
+                  </div>
+                  <div className="col-sm-3">
+                    <span className="badge badge-dark pull-right">
+                      {sumEffort( listitem.items ) }
+                    </span>
+                  </div>
+                </div>
                 <hr />
 
                 {listitem.items.map((item, index) => (
@@ -152,40 +168,39 @@ class Board extends Component {
                           provided.draggableProps.style
                         )}
                       >
-                        
-                        <div className="container-fluid">
-                          <div className="row">
-                          
-                            <div className="col-sm-9">{item.id}</div>
-        <div className="col-sm-3">
-                              <span className="badge badge-light pull-right">
-                                {item.effort}
-                              </span>
-                            </div>                            
 
-                          </div>
-                           <div className="row">
-                            <div className="col-sm-12"><b>{item.summary}</b></div>
+                        <div className="row">
+
+                          <div className="col-sm-9">{item.id}</div>
+                          <div className="col-sm-3">
+                            <span className="badge badge-dark pull-right">
+                              {item.effort}
+                            </span>
                           </div>
 
-                          
-                          <div className="row">
-                            <div className="col-sm-12">{item.desctiption}</div>
+                        </div>
+                        <div className="row">
+                          <div className="col-sm-12"><b>{item.summary}</b></div>
+                        </div>
+
+
+                        <div className="row">
+                          <div className="col-sm-12">{item.desctiption}</div>
+                        </div>
+                        <div className="row">
+                          <div className="col-sm-9">
+                            <span className="badge badge-primary pull-right">
+                              {item.epic}
+                            </span>
                           </div>
-                          <div className="row">
-                            <div className="col-sm-9">
-                              <span className="badge badge-primary pull-right">
-                                {item.epic}
-                              </span>
-                            </div>
-                            <div className="col-sm-3">
-                              <span className="badge badge-light pull-right">
-                                x
-                              </span>
-                            </div>
+                          <div className="col-sm-3">
+                            <span className="badge {if(item.prio>7) ? 'badge-light' : 'badge-error' } pull-right">
+                              {item.prio}
+                            </span>
                           </div>
                         </div>
                       </div>
+
                     )}
                   </Draggable>
                 ))}

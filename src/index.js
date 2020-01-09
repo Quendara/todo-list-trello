@@ -4,11 +4,11 @@ import ReactDOM from "react-dom";
 import Board from "./Board";
 
 import { messageService } from "./messageService";
-import { HomePage } from "./HomePage";
 
+import { HomePage } from "./HomePage";
 import { MessageReciever } from "./MessageReciever";
 
-import { groupBy,uniq,map } from 'underscore'
+// import { groupBy,uniq,map } from 'underscore'
 
 
 
@@ -16,8 +16,17 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { List, DatePicker, message } from "antd";
 
 const getRandElement = arr => {
-  return arr[Math.round(Math.random() * arr.length)];
-}; 
+  const number = Math.floor(Math.random() * Math.floor(arr.length))
+  // console.log(number)
+  return arr[number];
+};
+
+const storyAttributes = {
+  status: ["Open", "Progress", "Verificatin", "Done"],
+  epic: ["epic1", "epic2", "epic3", "epic4"],
+  prio: ["0", "2", "5", "10"],
+  start: ["Q1", "Q2", "Q3", "Q4"]
+}
 
 // fake data generator
 const getItems = (count, offset = 0) =>
@@ -26,47 +35,108 @@ const getItems = (count, offset = 0) =>
     summary: `Item to  ${k + offset}`,
     desctiption: `As user i want ${k + offset}, so that ...`,
     effort: 3,
-    epic: getRandElement(["epic1", "epic2", "epic3", "epic4"]),
+    epic: getRandElement(storyAttributes.epic),
     version: getRandElement(["1.0", "1.1", "2.0"]),
-    prio: getRandElement(["low", "mid", "high", "blocker"]),
-    status: getRandElement(["Open", "Progress", "Done"])
+    prio: getRandElement(storyAttributes.prio),
+    status: getRandElement(storyAttributes.status),
+    start: getRandElement(storyAttributes.start),
   }));
+
+
+const createCSV = ( count, offset = 0 ) => {
+  let csvDummy = ""
+  csvDummy += "id, " 
+  csvDummy += "summary, " 
+  csvDummy += "desctiption, " 
+  csvDummy += "effort, " 
+  csvDummy += "epic, " 
+  csvDummy += "version, " 
+  csvDummy += "prio, " 
+  csvDummy += "status, " 
+  csvDummy += "start \n" 
+
+  for( let index = 0; index < count; ++ index ){
+    csvDummy +=  "JIRA-" + index
+    csvDummy +=  "Item to " + index + offset
+    csvDummy +=  "As user i want ${k + offset}, so that ..."
+    csvDummy +=  3
+    csvDummy +=  getRandElement(storyAttributes.epic)
+    csvDummy +=  getRandElement(["1.0", "1.1", "2.0"])
+    csvDummy +=  getRandElement(storyAttributes.prio)
+    csvDummy +=  getRandElement(storyAttributes.status)
+    csvDummy +=  getRandElement(storyAttributes.start)    
+
+  }
+
+  console.log( csvDummy )
+
+  return csvDummy;
+
+}
 
 class App extends Component {
   constructor() {
     super();
 
-    // const flatlist = getItems(10)
+    createCSV(5)
+    const flatlist = getItems(10)
 
-    // console.log( flatlist )
-    // const groupedList = groupBy( flatlist, "status" ) 
+    console.log(flatlist)
+    // 
 
     // console.log( groupedList )
     // const groups = ( uniq( flatlist.status ) ) 
 
-    // this.lists = []
+    this.lists = []
 
-    // flatlist.map((listitem, index) => {
+    const groupBy = "start"
+    // const groupedList = groupBy( flatlist, groupBy ) 
 
-    // })
-    
-    this.lists = [
-      {
-        title: "Open",
-        items: getItems(10)
-      },
-      {
-        title: "Progress",
-        items: getItems(5, 10)
-      },
-      {
-        title: "Done",
-        items: getItems(5, 20)
+    const groups = storyAttributes[groupBy]
+
+    // create groups / colums
+    groups.map((item, index) => {
+      this.lists.push({ title: item, items: [] })
+    })
+
+    // add items to the columns
+    flatlist.map((listitem, index) => {
+
+      const groupItem = listitem[groupBy]
+      const colIdx = groups.indexOf(groupItem)
+
+      // push items to the correct column
+      if (colIdx >= 0) {
+        this.lists[colIdx].items.push(listitem)
       }
-    ]; // lists
+      else {
+        console.warn("Item Ignored")
+        console.warn(listitem)
+      }
+
+
+
+      // if( listitem[ groupBy ] === 'Done' )
+
+    })
+
+    // this.lists = [
+    //   {
+    //     title: "Open",
+    //     items: getItems(10)
+    //   },
+    //   {
+    //     title: "Progress",
+    //     items: getItems(5, 10)
+    //   },
+    //   {
+    //     title: "Done",
+    //     items: getItems(5, 20)
+    //   }
+    // ]; // lists
   }
 
-  componentDidMount() {  }
+  componentDidMount() { }
 
   render() {
     return (
@@ -80,7 +150,7 @@ class App extends Component {
           </div>
         </div>
 
-        
+
       </div>
     );
   }
