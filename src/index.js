@@ -8,6 +8,9 @@ import { messageService } from "./messageService";
 import { HomePage } from "./HomePage";
 import { MessageReciever } from "./MessageReciever";
 
+import { jsonToCSV, csvSoJson } from "./csvToJson";
+
+
 // import { groupBy,uniq,map } from 'underscore'
 
 
@@ -17,7 +20,7 @@ import { List, DatePicker, message } from "antd";
 
 const getRandElement = arr => {
   const number = Math.floor(Math.random() * Math.floor(arr.length))
-  // console.log(number)
+  console.log(number)
   return arr[number];
 };
 
@@ -33,60 +36,47 @@ const getItems = (count, offset = 0) =>
   Array.from({ length: count }, (v, k) => k).map(k => ({
     id: `JIRA-${k + offset}`,
     summary: `Item to  ${k + offset}`,
-    desctiption: `As user i want ${k + offset}, so that ...`,
+    description: `As user i want ${k + offset}, so that ...`,
     effort: 3,
-    epic: getRandElement(storyAttributes.epic),
-    version: getRandElement(["1.0", "1.1", "2.0"]),
-    prio: getRandElement(storyAttributes.prio),
-    status: getRandElement(storyAttributes.status),
-    start: getRandElement(storyAttributes.start),
+    epic: "" + getRandElement(storyAttributes.epic),
+    version: "v" + getRandElement(["1.0", "1.1", "2.0"]),
+    prio: "" + getRandElement(storyAttributes.prio),
+    status: "" + getRandElement(storyAttributes.status),
+    start: "" + getRandElement(storyAttributes.start),
   }));
 
 
-const createCSV = ( count, offset = 0 ) => {
-  let csvDummy = ""
-  csvDummy += "id, " 
-  csvDummy += "summary, " 
-  csvDummy += "desctiption, " 
-  csvDummy += "effort, " 
-  csvDummy += "epic, " 
-  csvDummy += "version, " 
-  csvDummy += "prio, " 
-  csvDummy += "status, " 
-  csvDummy += "start \n" 
+function testCSV( jsonInput )
+{
+    console.log("Print flatlist")
+    console.log(jsonInput)
 
-  for( let index = 0; index < count; ++ index ){
-    csvDummy +=  "JIRA-" + index
-    csvDummy +=  "Item to " + index + offset
-    csvDummy +=  "As user i want ${k + offset}, so that ..."
-    csvDummy +=  3
-    csvDummy +=  getRandElement(storyAttributes.epic)
-    csvDummy +=  getRandElement(["1.0", "1.1", "2.0"])
-    csvDummy +=  getRandElement(storyAttributes.prio)
-    csvDummy +=  getRandElement(storyAttributes.status)
-    csvDummy +=  getRandElement(storyAttributes.start)    
+    const csv = jsonToCSV( jsonInput )
 
-  }
+    console.log("Print csv")
+    console.log(csv)
 
-  console.log( csvDummy )
+    const json2 = csvSoJson( csv )
 
-  return csvDummy;
+    console.log("Print json")
+    console.log(json2)
 
+    const csv2 = jsonToCSV( json2 )
+    
+    console.log("Print csv")
+    console.log(csv2)    
 }
+
 
 class App extends Component {
   constructor() {
     super();
 
-    createCSV(5)
+    
     const flatlist = getItems(10)
 
-    console.log(flatlist)
-    // 
-
-    // console.log( groupedList )
-    // const groups = ( uniq( flatlist.status ) ) 
-
+    testCSV( flatlist  )
+   
     this.lists = []
 
     const groupBy = "start"
@@ -125,14 +115,7 @@ class App extends Component {
     //     title: "Open",
     //     items: getItems(10)
     //   },
-    //   {
-    //     title: "Progress",
-    //     items: getItems(5, 10)
-    //   },
-    //   {
-    //     title: "Done",
-    //     items: getItems(5, 20)
-    //   }
+    //   { ... }
     // ]; // lists
   }
 

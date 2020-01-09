@@ -185,7 +185,7 @@ class Board extends Component {
 
 
                         <div className="row">
-                          <div className="col-sm-12">{item.desctiption}</div>
+                          <div className="col-sm-12">{item.description}</div>
                         </div>
                         <div className="row">
                           <div className="col-sm-9">
