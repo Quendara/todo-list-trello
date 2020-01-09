@@ -4,11 +4,11 @@ export function csvSoJson(csv) {
 
   var result = [];
 
-  var headers = lines[0].split(",");
+  var headers = lines[0].split(";");
 
   for (var i = 1; i < lines.length; i++) {
     var obj = {};
-    var currentline = lines[i].split(",");
+    var currentline = lines[i].split(";");
 
     for (var j = 0; j < headers.length; j++) {
       
@@ -30,8 +30,8 @@ export function jsonToCSV( json3 ) {
   const replacer = (key, value) => (value === null ? "" : value); // specify how you want to handle null values here
   const header = Object.keys(items[0]);
   let csv = items.map(row =>
-    header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(",")
+    header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(";")
   );
-  csv.unshift(header.join(","));
+  csv.unshift(header.join(";"));
   return  csv.join("\r\n");
 }

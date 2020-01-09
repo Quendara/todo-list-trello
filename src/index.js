@@ -11,8 +11,8 @@ import { jsonToCSV, csvSoJson } from "./csvToJson";
 
 // import { groupBy,uniq,map } from 'underscore'
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { List, DatePicker, message } from "antd";
+// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+// import { List, DatePicker, message } from "antd";
 
 const getRandElement = arr => {
   const number = Math.floor(Math.random() * Math.floor(arr.length));
@@ -61,8 +61,6 @@ function testCSV(jsonInput) {
   console.log(csv2);
 }
 
-import React, { Component } from "react";
-
 class FileOpen extends Component {
   constructor(props) {
     super(props);
@@ -73,7 +71,7 @@ class FileOpen extends Component {
     const reader = new FileReader();
     reader.onload = async e => {
       const text = e.target.result;
-      
+
       console.log("showFile");
       console.log(text);
       // alert(text);
@@ -82,16 +80,35 @@ class FileOpen extends Component {
     reader.readAsText(e.target.files[0]);
   };
 
+  showRand = () => {
+
+    const flatlist = getItems(10);
+    // this.setJsonData(flatlist);
+
+    // this.lists = [
+    //   {
+    //     title: "Open",
+    //     items: getItems(10)
+    //   },
+    //   { ... }
+    // ]; // lists    
+
+    const csv = jsonToCSV(flatlist);
+    console.log( csv )
+    messageService.sendMessage(csv);
+  };
+
+
   render = () => {
     return (
       <div>
         <input type="file" onChange={e => this.showFile(e)} />
+        <button onClick={ this.showRand } > Simulate </button>
       </div>
+
     );
   };
 }
-
-export default App;
 
 class App extends Component {
   constructor(probs) {
@@ -101,31 +118,22 @@ class App extends Component {
       lists: []
     };
     this.subscription = null;
-
-    // const flatlist = getItems(10);
-    // this.setJsonData(flatlist);
-
-    // this.lists = [
-    //   {
-    //     title: "Open",
-    //     items: getItems(10)
-    //   },
-    //   { ... }
-    // ]; // lists
   }
 
   setCSVData(csv) {
-    console.log(  "setCSVData" )
-    console.log(  csv )
+    console.log("setCSVData")
+    console.log(csv)
     const flatlist = csvSoJson(csv);
 
-    console.log(  "setJsonData" )
-    console.log(  flatlist )
+    console.log("setJsonData")
+    console.log(flatlist)
 
     this.setJsonData(flatlist);
   }
 
   setJsonData(flatlist) {
+
+    // this.state.lists = []
 
     const groupBy = "status";
     // const groupedList = groupBy( flatlist, groupBy )
@@ -143,24 +151,23 @@ class App extends Component {
         this.state.lists[colIdx].items.push(listitem);
       } else {
         console.warn("Item Ignored");
-        console.warn(listitem); 
-      } 
+        console.warn(listitem);
+      }
     });
 
     this.forceUpdate();
-  } 
+  }
 
   componentDidMount() {
     // subscribe to home component messages
     this.subscription = messageService.getMessage().subscribe(message => {
-      if ( message)  {
+      if (message) {
         // add message to local state if not empty
 
         console.log("componentDidMount recieved message");
         console.log(message);
 
-        
-        this.setCSVData( message.text )
+        this.setCSVData(message.text)
         // this.setState({ messages: [...this.state.messages, message] });
       } else {
         // clear messages when empty message received
