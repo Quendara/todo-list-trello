@@ -22,8 +22,15 @@ export function csvSoJson(csv) {
   var lines = csv.split("\n");
 
   var result = [];
+  var headers = [];
 
-  var headers = lines[0].split(";");
+  var tempHeader = lines[0].split(";");
+
+  for (var i = 0; i < tempHeader.length; i++) {
+      headers.push( tempHeader[i].trim() )
+  }
+  
+  
 
   for (var i = 1; i < lines.length; i++) {
     var obj = {};
@@ -33,7 +40,7 @@ export function csvSoJson(csv) {
       for (var j = 0; j < headers.length; j++) {
         const str = currentline[j].replace(/^"(.*)"$/, "$1");
 
-        obj[headers[j]] = str;
+        obj[headers[j]] = str.trim();
       }
 
       result.push(obj);
