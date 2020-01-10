@@ -1,7 +1,12 @@
 import React from "react";
 
 import { Component } from "react";
-import ReactDOM from "react-dom";
+import { messageService } from "./messageService";
+import { jsonToCSV, csvSoJson } from "./csvToJson";
+
+import { Settings } from "./Settings";
+
+// import ReactDOM from "react-dom";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -64,11 +69,71 @@ const getListStyle = isDraggingOver => ({
   margin: 4
 });
 
+
+
 class Board extends Component {
   constructor(probs) {
     super(probs);
-    this.state = { lists: probs.list };
+    this.state = { lists: [] };
   }
+
+  setCSVData(csv) {
+    console.log("setCSVData")
+    console.log(csv)
+    const flatlist = csvSoJson(csv);
+
+    console.log("setJsonData")
+    console.log(flatlist)
+
+    this.setJsonData(flatlist);
+  }
+
+  setJsonData(flatlist) {
+
+    // clear array
+    this.state.lists.length = 0
+
+    
+    const groupBy = "status";
+    // const groupedList = groupBy( flatlist, groupBy )
+    const groups = Settings.storyAttributes[groupBy];
+    // create groups / colums
+    groups.map((item, index) => {
+      this.state.lists.push({ title: item, items: [] });
+    });
+    // add items to the columns
+    flatlist.map((listitem, index) => {
+      const groupItem = listitem[groupBy];
+      const colIdx = groups.indexOf(groupItem);
+      // push items to the correct column
+      if (colIdx >= 0) {
+        this.state.lists[colIdx].items.push(listitem);
+      } else {
+        console.warn("Item Ignored");
+        console.warn(listitem);
+      }
+    });
+
+    this.forceUpdate();
+  }
+
+  componentDidMount() {
+    // subscribe to home component messages
+    this.subscription = messageService.getMessage().subscribe(message => {
+      if (message) {
+        // add message to local state if not empty
+
+        console.log("componentDidMount recieved message");
+        console.log(message);
+
+        this.setCSVData(message.text)
+        // this.setState({ messages: [...this.state.messages, message] });
+      } else {
+        // clear messages when empty message received
+        // this.setState({ messages: [] });
+      }
+    });
+  } 
 
   getList = id => {
     return this.state.lists[+id].items;

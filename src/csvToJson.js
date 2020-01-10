@@ -1,3 +1,23 @@
+function testCSV(jsonInput) {
+  console.log("Print flatlist");
+  console.log(jsonInput);
+
+  const csv = jsonToCSV(jsonInput);
+
+  console.log("Print csv");
+  console.log(csv);
+
+  const json2 = csvSoJson(csv);
+
+  console.log("Print json");
+  console.log(json2);
+
+  const csv2 = jsonToCSV(json2);
+
+  console.log("Print csv");
+  console.log(csv2);
+}
+
 export function csvSoJson(csv) {
 
   var lines = csv.split("\n");
