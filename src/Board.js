@@ -79,11 +79,11 @@ class Board extends Component {
 
   setCSVData(csv) {
     console.log("setCSVData")
-    console.log(csv)
+    // console.log(csv)
     const flatlist = csvSoJson(csv);
 
     console.log("setJsonData")
-    console.log(flatlist)
+    // console.log(flatlist)
 
     this.setJsonData(flatlist);
   }
@@ -124,7 +124,7 @@ class Board extends Component {
         // add message to local state if not empty
 
         console.log("componentDidMount recieved message");
-        console.log(message);
+        // console.log(message);
 
         this.setCSVData(message.text)
         // this.setState({ messages: [...this.state.messages, message] });
