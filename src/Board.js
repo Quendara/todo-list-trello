@@ -135,6 +135,14 @@ class Board extends Component {
     });
   } 
 
+
+  componentWillUnmount() {
+      this.subscription.unsubscribe();
+      // unsubscribe to ensure no memory leaks
+      this.subscription.unsubscribe();
+    }
+
+
   getList = id => {
     return this.state.lists[+id].items;
     // return // this.state[this.id2List[id]]
