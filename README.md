@@ -2,9 +2,15 @@
 
 [Edit on StackBlitz ⚡️](https://stackblitz.com/edit/todo-list-trello)
 
-Open
+## Changelog
+
+### Open
+
+* Tes
+
+#### 2020-01-10
 
 * Group
 
-Closed
-* Message
+
+
