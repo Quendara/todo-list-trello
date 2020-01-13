@@ -29,8 +29,6 @@ export function csvSoJson(csv) {
   for (var i = 0; i < tempHeader.length; i++) {
       headers.push( tempHeader[i].trim() )
   }
-  
-  
 
   for (var i = 1; i < lines.length; i++) {
     var obj = {};
@@ -48,6 +46,8 @@ export function csvSoJson(csv) {
       console.log("csvSoJson / line skipped ");
     }
   }
+
+  console.log( result );
 
   return result; //JavaScript object
   // return JSON.stringify(result); //JSON
