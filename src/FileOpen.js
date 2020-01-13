@@ -8,7 +8,7 @@ import { Settings } from "./Settings";
 const getRandElement = arr => {
   const number = Math.floor(Math.random() * Math.floor(arr.length));
   console.log(number);
-  return arr[number]; 
+  return arr[number];
 };
 
 // fake data generator
@@ -40,7 +40,7 @@ class FileOpen extends React.Component {
 
       console.log("showFile");
       console.log(text);
-      // alert(text); 
+      // alert(text);
       messageService.sendMessage(text);
     };
     reader.readAsText(e.target.files[0]);
@@ -88,15 +88,25 @@ class FileOpen extends React.Component {
     // ]; // lists
 
     const csv = jsonToCSV(flatlist);
-    console.log( csv );
+    console.log(csv);
     messageService.sendMessage(csv);
   };
 
   render = () => {
     return (
-      <div>
-        <input type="file" onChange={e => this.showFile(e)} />
-        <button onClick={this.showRand}> Simulate </button>
+      <div className="row">
+        <div className="col-sm-6">
+          <input
+            type="file"
+            class="btn btn-primary"
+            onChange={e => this.showFile(e)}
+          />
+        </div>
+        <div className="col-sm-6">
+          <button class="btn btn-secondary" onClick={this.showRand}>
+            Simulate
+          </button>
+        </div>
       </div>
     );
   };

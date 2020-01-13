@@ -12,7 +12,6 @@ import { MessageReciever } from "./MessageReciever";
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 // import { List, DatePicker, message } from "antd";
 
-
 class App extends Component {
   constructor(probs) {
     super(probs);
@@ -23,22 +22,21 @@ class App extends Component {
     this.subscription = null;
   }
 
-
-
   render() {
     // <HomePage />
     // <MessageReciever />
-    // 
+    //
 
     return (
-      <div>
-        <FileOpen />
-        <div className="container text-center">
+        <div className="container-fluid">
+        <br />
+            
+              <FileOpen /> 
+            
           <div className="row">
             <Board />
           </div>
         </div>
-      </div>
     );
   }
 }

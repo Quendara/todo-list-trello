@@ -72,7 +72,7 @@ const getListStyle = isDraggingOver => ({
 class Board extends Component {
   constructor(probs) {
     super(probs);
-    this.state = { lists: [], csv: "", columnGroup : "start" };
+    this.state = { lists: [], csv: "", columnGroup: "start" };
   }
 
   setCSVData(csv) {
@@ -90,11 +90,10 @@ class Board extends Component {
     // clear array
     this.state.lists.length = 0;
 
-    
     // const groupedList = groupBy( flatlist, groupBy )
-    const groups = Settings.storyAttributes[ this.state.columnGroup ];
+    const groups = Settings.storyAttributes[this.state.columnGroup];
     // create groups / colums
-    groups.map((item, index) => { 
+    groups.map((item, index) => {
       this.state.lists.push({ title: item, items: [] });
     });
     // add items to the columns
@@ -178,28 +177,29 @@ class Board extends Component {
       console.log(result);
 
       this.state.lists[+source.droppableId].items = result[+source.droppableId];
-      this.state.lists[+destination.droppableId].items = result[+destination.droppableId];
+      this.state.lists[+destination.droppableId].items =
+        result[+destination.droppableId];
 
-        console.log( this.state.lists );
+      console.log(this.state.lists);
 
-      // fix group by 
-      let destList = this.state.lists[+destination.droppableId].items
+      // fix group by
+      let destList = this.state.lists[+destination.droppableId].items;
       for (let m = 0; m < destList.length; ++m) {
         // console.log( destList[m] )
-        let item = destList[m]
-        item[ "this.state.columnGroup" ] = this.state.lists[+destination.droppableId].title
-      }         
+        let item = destList[m];
+        item["this.state.columnGroup"] = this.state.lists[
+          +destination.droppableId
+        ].title;
+      }
 
       this.state.csv = "";
 
       for (let m = 0; m < this.state.lists.length; ++m) {
         try {
-          
-          if (this.state.lists[m].items.length != 0 ) {
-
+          if (this.state.lists[m].items.length != 0) {
             console.log("Export : " + this.state.lists[m].items.length);
-            this.state.csv += jsonToCSV(this.state.lists[m].items );
-            this.state.csv += "\n\n"
+            this.state.csv += jsonToCSV(this.state.lists[m].items);
+            this.state.csv += "\n\n";
             // console.log( this.state.lists[m]);
           } else {
             console.log("Export, no items for " + m);
@@ -210,8 +210,8 @@ class Board extends Component {
         }
       }
 
-      console.log( "Exported" )
-      console.log( this.state.csv )
+      console.log("Exported");
+      console.log(this.state.csv);
 
       this.forceUpdate();
     }
@@ -223,93 +223,93 @@ class Board extends Component {
     // {this.state.lists.map((listitem, index) => ({ listitem.title }))}
 
     return (
-      <div className="row">
+      <div className="col-sm-12">
         <div className="row">
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          {this.state.lists.map((listitem, index) => (
-            <Droppable droppableId={"" + index}>
-              {(provided, snapshot) => (
-                <div
-                  className="card"
-                  ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}
-                >
-                  <div className="row">
-                    <div className="col-sm-9">
-                      <b>{listitem.title}</b>
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            {this.state.lists.map((listitem, index) => (
+              <Droppable droppableId={"" + index}>
+                {(provided, snapshot) => (
+                  <div
+                    className="card"
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                  >
+                    <div className="row">
+                      <div className="col-sm-9">
+                        <b>{listitem.title}</b>
+                      </div>
+                      <div className="col-sm-3">
+                        <span className="badge badge-dark pull-right">
+                          {sumEffort(listitem.items)}
+                        </span>
+                      </div>
                     </div>
-                    <div className="col-sm-3">
-                      <span className="badge badge-dark pull-right">
-                        {sumEffort(listitem.items)}
-                      </span>
-                    </div>
+                    <hr />
+
+                    {listitem.items.map((item, index) => (
+                      <Draggable
+                        key={item.id}
+                        draggableId={item.id}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            className="card"
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                          >
+                            <div className="row">
+                              <div className="col-sm-9">{item.id}</div>
+                              <div className="col-sm-3">
+                                <span className="badge badge-dark pull-right">
+                                  {item.effort}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-sm-12">
+                                <b>{item.summary}</b>
+                              </div>
+                            </div>
+
+                            <div className="row">
+                              <div className="col-sm-12">
+                                {item.description}
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-sm-9">
+                                <span className="badge badge-primary pull-right">
+                                  {item.epic}
+                                </span>
+                              </div>
+                              <div className="col-sm-3">
+                                <span className="badge {if(item.prio>7) ? 'badge-light' : 'badge-error' } pull-right">
+                                  {item.prio}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
                   </div>
-                  <hr />
-
-                  {listitem.items.map((item, index) => (
-                    <Draggable
-                      key={item.id}
-                      draggableId={item.id}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          className="card"
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          <div className="row">
-                            <div className="col-sm-9">{item.id}</div>
-                            <div className="col-sm-3">
-                              <span className="badge badge-dark pull-right">
-                                {item.effort}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-sm-12">
-                              <b>{item.summary}</b>
-                            </div>
-                          </div>
-
-                          <div className="row">
-                            <div className="col-sm-12">{item.description}</div>
-                          </div>
-                          <div className="row">
-                            <div className="col-sm-9">
-                              <span className="badge badge-primary pull-right">
-                                {item.epic}
-                              </span>
-                            </div>
-                            <div className="col-sm-3">
-                              <span className="badge {if(item.prio>7) ? 'badge-light' : 'badge-error' } pull-right">
-                                {item.prio}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          ))}
-        </DragDropContext>
+                )}
+              </Droppable>
+            ))}
+          </DragDropContext>
         </div>
         <hr />
         <div className="alert alert-primary" id="export" role="alert">
           Export
           <hr />
-          <pre>
-          {this.state.csv}
-          </pre>
+          <pre>{this.state.csv}</pre>
         </div>
       </div>
     );
