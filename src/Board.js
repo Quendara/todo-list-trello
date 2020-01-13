@@ -72,7 +72,7 @@ const getListStyle = isDraggingOver => ({
 class Board extends Component {
   constructor(probs) {
     super(probs);
-    this.state = { lists: [], csv: "" };
+    this.state = { lists: [], csv: "", columnGroup : "start" };
   }
 
   setCSVData(csv) {
@@ -90,16 +90,16 @@ class Board extends Component {
     // clear array
     this.state.lists.length = 0;
 
-    const groupBy = "start";
+    
     // const groupedList = groupBy( flatlist, groupBy )
-    const groups = Settings.storyAttributes[groupBy];
+    const groups = Settings.storyAttributes[ this.state.columnGroup ];
     // create groups / colums
-    groups.map((item, index) => {
+    groups.map((item, index) => { 
       this.state.lists.push({ title: item, items: [] });
     });
     // add items to the columns
     flatlist.map((listitem, index) => {
-      const groupItem = listitem[groupBy];
+      const groupItem = listitem[this.state.columnGroup];
       const colIdx = groups.indexOf(groupItem);
       // push items to the correct column
       if (colIdx >= 0) {
@@ -175,31 +175,46 @@ class Board extends Component {
         destination
       );
 
-      console.log(result); 
-
-      // map the fechted items to the state . list
-      // let val = {};
-      // val[this.id2List[source.droppableId]] = result[source.droppableId];
-      // val[this.id2List[destination.droppableId]] = result[destination.droppableId];
-      // console.log(val);
-      // this.setState(val);
+      console.log(result);
 
       this.state.lists[+source.droppableId].items = result[+source.droppableId];
-      this.state.lists[+destination.droppableId].items =
-        result[+destination.droppableId];
+      this.state.lists[+destination.droppableId].items = result[+destination.droppableId];
 
-      for (let l = 0; l < this.state.lists.length; ++l) {
+        console.log( this.state.lists );
+
+      // fix group by 
+      let destList = this.state.lists[+destination.droppableId].items
+      for (let m = 0; m < destList.length; ++m) {
+        // console.log( destList[m] )
+        let item = destList[m]
+        item[ "this.state.columnGroup" ] = this.state.lists[+destination.droppableId].title
+      }         
+
+      this.state.csv = "";
+
+      for (let m = 0; m < this.state.lists.length; ++m) {
         try {
-          console.log( "Export, no items for : " + this.state.lists[l])
-          //this.state.csv = "";
-          /this.state.csv += jsonToCSV( this.state.lists[l] );
-        } finally { 
-          console.log( "Export, no items for " + l)
+          
+          if (this.state.lists[m].items.length != 0 ) {
+
+            console.log("Export : " + this.state.lists[m].items.length);
+            this.state.csv += jsonToCSV(this.state.lists[m].items );
+            this.state.csv += "\n\n"
+            // console.log( this.state.lists[m]);
+          } else {
+            console.log("Export, no items for " + m);
+          }
+          //
+        } finally {
+          // console.error(" Export, no items for " + m);
         }
       }
 
+      console.log( "Exported" )
+      console.log( this.state.csv )
+
       this.forceUpdate();
-    } 
+    }
   };
 
   // Normally you would want to split things out into separate components.
@@ -209,6 +224,7 @@ class Board extends Component {
 
     return (
       <div className="row">
+        <div className="row">
         <DragDropContext onDragEnd={this.onDragEnd}>
           {this.state.lists.map((listitem, index) => (
             <Droppable droppableId={"" + index}>
@@ -286,11 +302,14 @@ class Board extends Component {
             </Droppable>
           ))}
         </DragDropContext>
+        </div>
         <hr />
         <div className="alert alert-primary" id="export" role="alert">
           Export
           <hr />
+          <pre>
           {this.state.csv}
+          </pre>
         </div>
       </div>
     );

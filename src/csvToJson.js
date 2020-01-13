@@ -53,7 +53,7 @@ export function csvSoJson(csv) {
   // return JSON.stringify(result); //JSON
 }
 
-export function jsonToCSV(json3) {
+export function jsonToCSV( json3 ) {
   const items = json3;
   const replacer = (key, value) => (value === null ? "" : value); // specify how you want to handle null values here
   const header = Object.keys(items[0]);
