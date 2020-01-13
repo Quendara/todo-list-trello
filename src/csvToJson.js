@@ -55,13 +55,16 @@ export function csvSoJson(csv) {
   // return JSON.stringify(result); //JSON
 }
 
-export function jsonToCSV( json3 ) {
+export function jsonToCSV( json3, addHeader = true ) {
   const items = json3;
   const replacer = (key, value) => (value === null ? "" : value); // specify how you want to handle null values here
   const header = Object.keys(items[0]);
   let csv = items.map(row =>
     header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(";")
   );
-  csv.unshift(header.join(";"));
+
+  if( addHeader ){ // adding header
+    csv.unshift(header.join(";"));
+  }
   return csv.join("\r\n");
 }

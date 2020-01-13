@@ -198,7 +198,9 @@ class Board extends Component {
         try {
           if (this.state.lists[m].items.length != 0) {
             console.log("Export : " + this.state.lists[m].items.length);
-            this.state.csv += jsonToCSV(this.state.lists[m].items);
+            
+            const addHeader = m==0;
+            this.state.csv += jsonToCSV(this.state.lists[m].items, addHeader);
             this.state.csv += "\n\n";
             // console.log( this.state.lists[m]);
           } else {
