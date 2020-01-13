@@ -36,7 +36,9 @@ export function csvSoJson(csv) {
 
     if (headers.length === currentline.length) {
       for (var j = 0; j < headers.length; j++) {
-        const str = currentline[j].replace(/^"(.*)"$/, "$1");
+        const str = currentline[j];
+        str = str.trim(); // remove whitespace
+        str = str.replace(/^"(.*)"$/, "$1"); // remove ""
 
         obj[headers[j]] = str.trim();
       }
