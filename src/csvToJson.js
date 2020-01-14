@@ -30,11 +30,22 @@ export function csvSoJson(csv) {
       headers.push( tempHeader[i].trim() )
   }
 
+  let createId = true
+  if( headers.indexOf("id") >= 0 ){
+    createId = false // id column found
+  }
+
+
   for (var i = 1; i < lines.length; i++) {
     var obj = {};
     var currentline = lines[i].split(";");
 
     if (headers.length === currentline.length) {
+
+      if( createId ){
+        obj['id'] = "ID-"+i
+      } 
+
       for (var j = 0; j < headers.length; j++) {
         const str = currentline[j];
         str = str.trim(); // remove whitespace
@@ -42,6 +53,8 @@ export function csvSoJson(csv) {
 
         obj[headers[j]] = str.trim();
       }
+
+
 
       result.push(obj);
     } else {

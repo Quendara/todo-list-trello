@@ -7,6 +7,7 @@ import FileOpen from "./FileOpen";
 import { HomePage } from "./HomePage";
 import { MessageReciever } from "./MessageReciever";
 
+
 // import { groupBy,uniq,map } from 'underscore'
 
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -28,7 +29,7 @@ class App extends Component {
     //
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid board">
         <br />
             
               <FileOpen /> 

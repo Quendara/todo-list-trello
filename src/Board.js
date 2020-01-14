@@ -5,6 +5,7 @@ import { messageService } from "./messageService";
 import { jsonToCSV, csvSoJson } from "./csvToJson";
 
 import { Settings } from "./Settings";
+import { CardTemplate } from "./CardTemplate";
 
 // import ReactDOM from "react-dom";
 
@@ -72,54 +73,97 @@ const getListStyle = isDraggingOver => ({
 class Board extends Component {
   constructor(probs) {
     super(probs);
-    this.state = { lists: [], csv: "", columnGroup: "start" };
+    this.state = {
+      lists: [],
+      csv: "", // input / output
+      columnGroup: "start",
+      groups:[]
+    };
   }
 
-  setCSVData(csv) {
+  setCSVData = csv => {
     console.log("setCSVData");
     // console.log(csv)
+    this.state.csv = csv;
     const flatlist = csvSoJson(csv);
 
     console.log("setJsonData");
     // console.log(flatlist)
 
-    this.setJsonData(flatlist);
-  }
+    this.setJsonData(flatlist, this.state.columnGroup);
+  };
 
-  setJsonData(flatlist) {
+  setGroup = group => {
+    console.log("setGroup");
+    const flatlist = csvSoJson(this.state.csv);
+
+    this.setJsonData(flatlist, group);
+  };
+
+  reset = ( columnGroup ) => {
     // clear array
     this.state.lists.length = 0;
+    this.state.columnGroup = columnGroup;
+    this.state.groups = Settings.storyAttributes[columnGroup]; // predefined/initial setting 
 
     // const groupedList = groupBy( flatlist, groupBy )
-    const groups = Settings.storyAttributes[this.state.columnGroup];
-    // create groups / colums
-    groups.map((item, index) => {
+    
+
+    // create predefined groups / colums
+    this.state.groups.map((item, index) => { 
       this.state.lists.push({ title: item, items: [] });
     });
+  }
+
+  setJsonData = (flatlist, columnGroup) => {
+    // create groups out of the FLAT LIST
+    this.reset( columnGroup )
+
     // add items to the columns
     flatlist.map((listitem, index) => {
-      const groupItem = listitem[this.state.columnGroup];
-      const colIdx = groups.indexOf(groupItem);
+
+      const groupItem = listitem[columnGroup]; // check to which colums this item belongs to
+      console.log( groupItem )
+
+      let colIdx = this.state.groups.indexOf(groupItem);
       // push items to the correct column
       if (colIdx >= 0) {
+        // items fits to a column
         this.state.lists[colIdx].items.push(listitem);
       } else {
-        console.warn("Item Ignored");
-        console.warn(listitem);
+
+        const newColHeader = "Unspecified";
+        if( groupItem != undefined && groupItem.length > 0 )
+        {
+          newColHeader = groupItem
+        }
+
+        // if item was undefined, now check if the Unspecified columns was already added
+        let colIdx = this.state.groups.indexOf(newColHeader);
+        if(colIdx >= 0) {
+          // found
+        }
+        else
+        {
+          this.state.groups.push( newColHeader )
+
+          // push item to last columnGroup
+          this.state.lists.push({ title: newColHeader, items: [] });
+          colIdx = this.state.lists.length-1; // last column
+        }
+        this.state.lists[colIdx].items.push(listitem);
       }
     });
 
     this.forceUpdate();
-  }
+  };
 
   componentDidMount() {
     // subscribe to home component messages
     this.subscription = messageService.getMessage().subscribe(message => {
       if (message) {
         // add message to local state if not empty
-
         console.log("componentDidMount recieved message");
-        // console.log(message);
 
         this.setCSVData(message.text);
         // this.setState({ messages: [...this.state.messages, message] });
@@ -131,7 +175,6 @@ class Board extends Component {
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
   }
@@ -176,6 +219,7 @@ class Board extends Component {
 
       console.log(result);
 
+      // update lists in view
       this.state.lists[+source.droppableId].items = result[+source.droppableId];
       this.state.lists[+destination.droppableId].items =
         result[+destination.droppableId];
@@ -187,21 +231,27 @@ class Board extends Component {
       for (let m = 0; m < destList.length; ++m) {
         // console.log( destList[m] )
         let item = destList[m];
-        item["this.state.columnGroup"] = this.state.lists[
+        item[this.state.columnGroup] = this.state.lists[
           +destination.droppableId
         ].title;
       }
 
+      // Export CSV
+      let addHeaderOnce = true;
       this.state.csv = "";
 
       for (let m = 0; m < this.state.lists.length; ++m) {
         try {
           if (this.state.lists[m].items.length != 0) {
             console.log("Export : " + this.state.lists[m].items.length);
-            
-            const addHeader = m==0;
-            this.state.csv += jsonToCSV(this.state.lists[m].items, addHeader);
+
+            this.state.csv += jsonToCSV(
+              this.state.lists[m].items,
+              addHeaderOnce
+            );
             this.state.csv += "\n\n";
+
+            addHeaderOnce = false;
             // console.log( this.state.lists[m]);
           } else {
             console.log("Export, no items for " + m);
@@ -212,8 +262,8 @@ class Board extends Component {
         }
       }
 
-      console.log("Exported");
-      console.log(this.state.csv);
+      // console.log("Exported");
+      // console.log(this.state.csv);
 
       this.forceUpdate();
     }
@@ -226,6 +276,39 @@ class Board extends Component {
 
     return (
       <div className="col-sm-12">
+        <div className="row">
+          <div className="col-sm-12">
+            <hr />
+            <div className="btn-group" role="group" aria-label="Basic example">
+              <button
+                className="btn btn-secondary"
+                onClick={e => this.setGroup("start")}
+              >
+                Time
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={e => this.setGroup("status")}
+              >
+                Status
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={e => this.setGroup("epic")}
+              >
+                Epic
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={e => this.setGroup("team")}
+              >
+                Team
+              </button>
+
+            </div>
+          </div>
+        </div>
+
         <div className="row">
           <DragDropContext onDragEnd={this.onDragEnd}>
             {this.state.lists.map((listitem, index) => (
@@ -265,37 +348,7 @@ class Board extends Component {
                               provided.draggableProps.style
                             )}
                           >
-                            <div className="row">
-                              <div className="col-sm-9">{item.id}</div>
-                              <div className="col-sm-3">
-                                <span className="badge badge-dark pull-right">
-                                  {item.effort}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-sm-12">
-                                <b>{item.summary}</b>
-                              </div>
-                            </div>
-
-                            <div className="row">
-                              <div className="col-sm-12">
-                                {item.description}
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-sm-9">
-                                <span className="badge badge-primary pull-right">
-                                  {item.epic}
-                                </span>
-                              </div>
-                              <div className="col-sm-3">
-                                <span className="badge {if(item.prio>7) ? 'badge-light' : 'badge-error' } pull-right">
-                                  {item.prio}
-                                </span>
-                              </div>
-                            </div>
+                            <CardTemplate item={item} />                            
                           </div>
                         )}
                       </Draggable>
