@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 
 import { Component } from "react";
 import { messageService } from "./messageService";
@@ -56,6 +57,9 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 const sumEffort = arr => {
+  
+  return arr.length
+
   let sum = 0;
   arr.map((item, index) => {
     sum += +item.effort;
@@ -86,6 +90,8 @@ class Board extends Component {
     // console.log(csv)
     this.state.csv = csv;
     const flatlist = csvSoJson(csv);
+
+    document.getElementById("inputTextarea").value = this.state.csv
 
     console.log("setJsonData");
     // console.log(flatlist)
@@ -262,44 +268,50 @@ class Board extends Component {
         }
       }
 
-      // console.log("Exported");
-      // console.log(this.state.csv);
+      document.getElementById("inputTextarea").value = this.state.csv
 
       this.forceUpdate();
     }
   };
+
+  readCSVFromInput = () => {
+    const csv = document.getElementById("inputTextarea") 
+    this.setCSVData( csv.value )
+  }  
 
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
   render() {
     // {this.state.lists.map((listitem, index) => ({ listitem.title }))}
 
+    
+
     return (
       <div className="col-sm-12">
-        <div className="row">
+        <div className="row"> 
           <div className="col-sm-12">
             <hr />
             <div className="btn-group" role="group" aria-label="Basic example">
               <button
-                className="btn btn-secondary"
+                className={"btn btn-secondary " + ( this.state.columnGroup == 'start' ? 'active' : '')}
                 onClick={e => this.setGroup("start")}
               >
                 Time
               </button>
               <button
-                className="btn btn-secondary"
+                className={"btn btn-secondary " + ( this.state.columnGroup == 'status' ? 'active' : '')}
                 onClick={e => this.setGroup("status")}
               >
                 Status
               </button>
               <button
-                className="btn btn-secondary"
+                className={"btn btn-secondary " + ( this.state.columnGroup == 'epic' ? 'active' : '')}
                 onClick={e => this.setGroup("epic")}
               >
                 Epic
               </button>
               <button
-                className="btn btn-secondary"
+                className={"btn btn-secondary " + ( this.state.columnGroup == 'team' ? 'active' : '')}
                 onClick={e => this.setGroup("team")}
               >
                 Team
@@ -362,13 +374,22 @@ class Board extends Component {
         </div>
         <hr />
         <div className="alert alert-primary" id="export" role="alert">
-          Export
-          <hr />
-          <pre>{this.state.csv}</pre>
+          
+           <button
+                className="btn btn-secondary"
+                onClick={e => this.readCSVFromInput() }
+              >Update</button>
+          <hr />          
+
+          <textarea class="form-control" rows="20" id="inputTextarea" >
+          
+          </textarea>
         </div>
       </div>
     );
   }
+
+
 }
 
 export default Board;

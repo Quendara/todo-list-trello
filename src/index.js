@@ -43,4 +43,4 @@ class App extends Component {
 }
 
 // Put the things into the DOM!
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root") );

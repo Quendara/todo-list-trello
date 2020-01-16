@@ -1,16 +1,18 @@
 export const Settings = {
   storyAttributes: {
-    status: ["Open", "Progress", "Verification", "Done"],
+    // status: ["Open", "Progress", "Verification", "Done"],
+    status: ["Open", "Planned",  "In Progress", "Corrected", "Closed", "Delegated", "Next Version" ], // jira
     epic: [], 
     prio: ["0", "2", "5", "10"],
-    start: [ "Jan", "Feb", "Mar", "April" ],    
-    team: ["BGL", "BCM", "URT" ],    
+    // start: [ "Jan", "Feb", "Mar", "April" ],    
+    start: [],    
+    team: ["BGL", "BCM", "URT" ],     
   }
 };
 
 export const SettingsSimulate = {
   storyAttributes: {
-    status: ["Open", "Progress", "Verification", "Done"],
+    status: ["Open", "In Progress", "Verification", "Corrected", "Closed"],
     epic: ["Roadmap", "UX", "Quality", "NSS", "STA", "Besson"],
     prio: ["0", "2", "5", "10"],
     start: [ "Jan", "Feb", "Mar", "April" ]

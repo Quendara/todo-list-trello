@@ -8,15 +8,35 @@ class CardTemplate extends React.Component {
     
   }
 
-  prioBadge( prio )
+  badgePrio( prio )
   {
-    if( this.item.prio > 7){
-      return 'badge-error'
+    if( prio > 7){
+      return 'badge-danger'
+    }
+    if( prio == "Blocker"){
+      return 'badge-danger'
     }
     else{
       return 'badge-light'
     }
-  }
+  } 
+
+  badgeStatus( status )
+  {
+    let ret =  'badge-light' //default
+    switch( status ){
+      case "Done": ret = 'badge-success'; break;
+      case "Closed": ret = 'badge-success'; break;
+      case "Verification": ret = 'badge-success'; break;
+      case "Corrected": ret = 'badge-success'; break;
+      case "Progress": ret = 'badge-warning'; break;
+      case "In Progress": ret = 'badge-warning'; break;
+      case "Delegated": ret = 'badge-info'; break;
+      default : ret = 'badge-light'; break;
+    }
+      
+    return ret;
+  } 
 
   render() {
     // const { item } = this.item;
@@ -42,11 +62,12 @@ class CardTemplate extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-9">
-            <span className="badge badge-primary pull-right">{ this.item.epic }</span>
+            <span className="badge badge-primary pull-right">{ this.item.epic }</span> 
+            <span className={ "badge " + ( this.badgeStatus( this.item.status )) } >
+            { this.item.status }</span>
           </div>
           <div className="col-sm-3">
-  
-            <span className="badge { prioBadge( this.item.prio ) } pull-right">
+            <span className={ "badge " + ( this.badgePrio( this.item.prio )) } >
               { this.item.prio}
             </span>
           </div>

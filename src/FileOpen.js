@@ -70,7 +70,6 @@ class FileOpen extends React.Component {
     const csv = jsonToCSV(flatlist);
     console.log(csv);
     messageService.sendMessage(csv);
-
   };  
 
   render = () => {
