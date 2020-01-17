@@ -17,7 +17,7 @@ const getItems = (count, offset = 0) =>
     id: `JIRA-${k + offset}`,
     summary: `Item to  ${k + offset}`,
     description: `As user i want ${k + offset}, so that ...`,
-    effort: 3,
+    effort: "" + getRandElement(SettingsSimulate.storyAttributes.effort),
     epic: "" + getRandElement(SettingsSimulate.storyAttributes.epic),
     version: "v" + getRandElement(["1.0", "1.1", "2.0"]),
     prio: "" + getRandElement(SettingsSimulate.storyAttributes.prio),

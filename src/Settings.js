@@ -15,6 +15,7 @@ export const SettingsSimulate = {
     status: ["Open", "In Progress", "Verification", "Corrected", "Closed"],
     epic: ["Roadmap", "UX", "Quality", "NSS", "STA", "Besson"],
     prio: ["0", "2", "5", "10"],
+    effort: ["1", "2", "3", "5", "8", "13"],
     start: [ "Jan", "Feb", "Mar", "April" ]
   }
 };

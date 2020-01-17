@@ -381,7 +381,7 @@ class Board extends Component {
               >Update</button>
           <hr />          
 
-          <textarea class="form-control" rows="20" id="inputTextarea" >
+          <textarea className="form-control" rows="10" id="inputTextarea" >
           
           </textarea>
         </div>
