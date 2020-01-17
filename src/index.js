@@ -29,7 +29,7 @@ class App extends Component {
     // <HomePage />
     // <MessageReciever />
     //
-    // <Board />
+    
     return (
         <div className="container-fluid board">
         <br />
@@ -37,10 +37,12 @@ class App extends Component {
               <FileOpen /> 
             
           <div className="row">
-            
+            <Board />
           </div>
           <div className="row">
+            <div className="col-sm-6" >
             <ScatterPlot />
+            </div>
           </div>
 
         </div>

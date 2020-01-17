@@ -20,21 +20,10 @@ class ScatterPlot extends React.Component {
       data: {}
     };
 
-    this.data = {
-      datasets: [
-        {
-          label: props.group_unit,
-          fill: false,
-          pointBackgroundColor: "#fff",
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          borderColor: "#F00",
-          pointHoverBorderWidth: 2,
-          pointRadius: 6,
-          data: []
-        }
-      ]
-    };
+    this.data = {};
+    this.options = {};
+    
+    this.tooltips = []
   }
 
   setCSVData = csv => {
@@ -50,10 +39,15 @@ class ScatterPlot extends React.Component {
       values.push({
         x: item[this.xAxes],
         y: item[this.yAxes]
+        // tooltip: 
       });
+
+      const toolt = "[" + item.id + "] "+ item.summary
+
+      this.tooltips.push( toolt )
     });
 
-    console.log(values);
+    console.log(this.tooltips);
     this.setValues(values);
   };
 
@@ -72,15 +66,60 @@ class ScatterPlot extends React.Component {
           borderColor: "#F00",
           pointHoverBorderWidth: 2,
           pointRadius: 6,
-          data: []
+          data: localItems
         }
       ]
     };
-    
+
+    this.options = {
+      tooltips: {
+        callbacks: {
+          label: (tooltipItem, data) => {
+            
+            var label = this.tooltips[tooltipItem.index] || "";
+
+            if (label) {
+              label += ": ";
+            }
+
+            label += "IDX:" + tooltipItem.index + ", "; 
+            label += this.xAxes + " : " + tooltipItem.xLabel + ", ";
+            label += this.yAxes + " : " + tooltipItem.yLabel;
+
+            // var tooltipEl = document.getElementById('chartjs-tooltip');
+            // tooltipEl.innerHTML = label
+
+            return label;
+          } 
+        }
+      },
+      scales: {
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: this.xAxes
+            }
+          }
+        ],
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: this.yAxes
+            }
+          }
+        ]
+      }
+    };
+
     this.setState({
       isLoaded: true
     });
-  };
+
+    // this.fo
+    this.forceUpdate();
+  }; 
 
   componentDidMount() {
     // subscribe to home component messages
@@ -112,23 +151,7 @@ class ScatterPlot extends React.Component {
     } else {
       // console.log( items )
       // plot( items )
-      return (
-        <Scatter
-          data={this.data}
-          options={{
-            scales: {
-              xAxes: [
-                {
-                  scaleLabel: {
-                    display: true,
-                    labelString: "test"
-                  }
-                }
-              ]
-            }
-          }}
-        />
-      );
+      return <Scatter data={this.data} options={this.options} />;
     }
   }
 }

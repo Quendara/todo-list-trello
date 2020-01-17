@@ -57,8 +57,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 const sumEffort = arr => {
-  
-  return arr.length
+  return arr.length;
 
   let sum = 0;
   arr.map((item, index) => {
@@ -81,7 +80,7 @@ class Board extends Component {
       lists: [],
       csv: "", // input / output
       columnGroup: "start",
-      groups:[]
+      groups: []
     };
   }
 
@@ -91,7 +90,7 @@ class Board extends Component {
     this.state.csv = csv;
     const flatlist = csvSoJson(csv);
 
-    document.getElementById("inputTextarea").value = this.state.csv
+    document.getElementById("inputTextarea").value = this.state.csv;
 
     console.log("setJsonData");
     // console.log(flatlist)
@@ -106,30 +105,28 @@ class Board extends Component {
     this.setJsonData(flatlist, group);
   };
 
-  reset = ( columnGroup ) => {
+  reset = columnGroup => {
     // clear array
     this.state.lists.length = 0;
     this.state.columnGroup = columnGroup;
-    this.state.groups = Settings.storyAttributes[columnGroup]; // predefined/initial setting 
+    this.state.groups = Settings.storyAttributes[columnGroup]; // predefined/initial setting
 
     // const groupedList = groupBy( flatlist, groupBy )
-    
 
     // create predefined groups / colums
-    this.state.groups.map((item, index) => { 
+    this.state.groups.map((item, index) => {
       this.state.lists.push({ title: item, items: [] });
     });
-  }
+  };
 
   setJsonData = (flatlist, columnGroup) => {
     // create groups out of the FLAT LIST
-    this.reset( columnGroup )
+    this.reset(columnGroup);
 
     // add items to the columns
     flatlist.map((listitem, index) => {
-
       const groupItem = listitem[columnGroup]; // check to which colums this item belongs to
-      console.log( groupItem )
+      console.log(groupItem);
 
       let colIdx = this.state.groups.indexOf(groupItem);
       // push items to the correct column
@@ -137,25 +134,21 @@ class Board extends Component {
         // items fits to a column
         this.state.lists[colIdx].items.push(listitem);
       } else {
-
         const newColHeader = "Unspecified";
-        if( groupItem != undefined && groupItem.length > 0 )
-        {
-          newColHeader = groupItem
+        if (groupItem != undefined && groupItem.length > 0) {
+          newColHeader = groupItem;
         }
 
         // if item was undefined, now check if the Unspecified columns was already added
         let colIdx = this.state.groups.indexOf(newColHeader);
-        if(colIdx >= 0) {
+        if (colIdx >= 0) {
           // found
-        }
-        else
-        {
-          this.state.groups.push( newColHeader )
+        } else {
+          this.state.groups.push(newColHeader);
 
           // push item to last columnGroup
           this.state.lists.push({ title: newColHeader, items: [] });
-          colIdx = this.state.lists.length-1; // last column
+          colIdx = this.state.lists.length - 1; // last column
         }
         this.state.lists[colIdx].items.push(listitem);
       }
@@ -268,55 +261,65 @@ class Board extends Component {
         }
       }
 
-      document.getElementById("inputTextarea").value = this.state.csv
+      document.getElementById("inputTextarea").value = this.state.csv;
 
       this.forceUpdate();
     }
   };
 
   readCSVFromInput = () => {
-    const csv = document.getElementById("inputTextarea") 
-    this.setCSVData( csv.value )
-  }  
+    const csv = document.getElementById("inputTextarea");
+    // this.setCSVData(csv.value);
+    messageService.sendMessage(csv.value);  
+  };
 
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
   render() {
     // {this.state.lists.map((listitem, index) => ({ listitem.title }))}
 
-    
-
     return (
       <div className="col-sm-12">
-        <div className="row"> 
+        <div className="row">
           <div className="col-sm-12">
             <hr />
             <div className="btn-group" role="group" aria-label="Basic example">
               <button
-                className={"btn btn-secondary " + ( this.state.columnGroup == 'start' ? 'active' : '')}
+                className={
+                  "btn btn-secondary " +
+                  (this.state.columnGroup == "start" ? "active" : "")
+                }
                 onClick={e => this.setGroup("start")}
               >
                 Time
               </button>
               <button
-                className={"btn btn-secondary " + ( this.state.columnGroup == 'status' ? 'active' : '')}
+                className={
+                  "btn btn-secondary " +
+                  (this.state.columnGroup == "status" ? "active" : "")
+                }
                 onClick={e => this.setGroup("status")}
               >
                 Status
               </button>
               <button
-                className={"btn btn-secondary " + ( this.state.columnGroup == 'epic' ? 'active' : '')}
+                className={
+                  "btn btn-secondary " +
+                  (this.state.columnGroup == "epic" ? "active" : "")
+                }
                 onClick={e => this.setGroup("epic")}
               >
                 Epic
               </button>
               <button
-                className={"btn btn-secondary " + ( this.state.columnGroup == 'team' ? 'active' : '')}
+                className={
+                  "btn btn-secondary " +
+                  (this.state.columnGroup == "team" ? "active" : "")
+                }
                 onClick={e => this.setGroup("team")}
               >
                 Team
-              </button>
-
+              </button>              
             </div>
           </div>
         </div>
@@ -360,7 +363,7 @@ class Board extends Component {
                               provided.draggableProps.style
                             )}
                           >
-                            <CardTemplate item={item} />                            
+                            <CardTemplate item={item} />
                           </div>
                         )}
                       </Draggable>
@@ -374,22 +377,19 @@ class Board extends Component {
         </div>
         <hr />
         <div className="alert alert-primary" id="export" role="alert">
-          
-           <button
-                className="btn btn-secondary"
-                onClick={e => this.readCSVFromInput() }
-              >Update</button>
-          <hr />          
+          <button
+            className="btn btn-secondary"
+            onClick={e => this.readCSVFromInput()}
+          >
+            Update
+          </button>
+          <hr />
 
-          <textarea className="form-control" rows="10" id="inputTextarea" >
-          
-          </textarea>
+          <textarea className="form-control" rows="10" id="inputTextarea" />
         </div>
       </div>
     );
   }
-
-
 }
 
 export default Board;

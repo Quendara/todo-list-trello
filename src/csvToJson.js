@@ -24,7 +24,16 @@ export function csvSoJson(csv) {
   var result = [];
   var headers = [];
 
-  var tempHeader = lines[0].split(";");
+  let defaultSeperator = ";"
+
+  var tempHeader = lines[0].split( defaultSeperator );
+
+  if(  tempHeader.length == 1 )
+  {
+      // try TAB's when ; was not successful
+      defaultSeperator = "\t"
+      tempHeader = lines[0].split( defaultSeperator );
+  }  
 
   for (var i = 0; i < tempHeader.length; i++) {
       headers.push( tempHeader[i].trim() )
@@ -38,7 +47,7 @@ export function csvSoJson(csv) {
 
   for (var i = 1; i < lines.length; i++) {
     var obj = {};
-    var currentline = lines[i].split(";");
+    var currentline = lines[i].split( defaultSeperator );
 
     if (headers.length === currentline.length) {
 
