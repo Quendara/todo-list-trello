@@ -109,7 +109,16 @@ class Board extends Component {
     // clear array
     this.state.lists.length = 0;
     this.state.columnGroup = columnGroup;
+    this.state.groups.length = 0;
     this.state.groups = Settings.storyAttributes[columnGroup]; // predefined/initial setting
+
+    // if ( Settings.storyAttributes.hasOwnProperty( columnGroup ) ){
+
+    // }
+    // else{
+    //   // clear
+    //   this.state.groups.length = 0;
+    // }
 
     // const groupedList = groupBy( flatlist, groupBy )
 
@@ -270,7 +279,7 @@ class Board extends Component {
   readCSVFromInput = () => {
     const csv = document.getElementById("inputTextarea");
     // this.setCSVData(csv.value);
-    messageService.sendMessage(csv.value);  
+    messageService.sendMessage(csv.value);
   };
 
   // Normally you would want to split things out into separate components.
@@ -309,7 +318,7 @@ class Board extends Component {
                 }
                 onClick={e => this.setGroup("epic")}
               >
-                Epic
+                Epic 
               </button>
               <button
                 className={
@@ -319,7 +328,25 @@ class Board extends Component {
                 onClick={e => this.setGroup("team")}
               >
                 Team
-              </button>              
+              </button> 
+              <button
+                className={
+                  "btn btn-secondary " +
+                  (this.state.columnGroup == "effort" ? "active" : "")
+                }
+                onClick={e => this.setGroup("effort")}
+              >
+                Effort
+              </button>
+              <button
+                className={
+                  "btn btn-secondary " +
+                  (this.state.columnGroup == "prio" ? "active" : "")
+                }
+                onClick={e => this.setGroup("prio")}
+              >
+                Prio
+              </button>
             </div>
           </div>
         </div>

@@ -47,11 +47,12 @@ export function csvSoJson(csv) {
 
   for (var i = 1; i < lines.length; i++) {
     var obj = {};
-    var currentline = lines[i].split( defaultSeperator );
+    var currentline = lines[i].trim(); // irnore empty lines with only TAB's
+    var currentline = currentline.split( defaultSeperator );
 
-    if (headers.length === currentline.length) {
+    if (headers.length == currentline.length) {
 
-      if( createId ){
+      if( createId ){ 
         obj['id'] = "ID-"+i
       } 
 

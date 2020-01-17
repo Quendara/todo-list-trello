@@ -33,6 +33,7 @@ class ScatterPlot extends React.Component {
     const flatlist = csvSoJson(csv);
 
     let values = [];
+    this.tooltips = []
 
     // map from simple { ... effort, prio, } ==> { x, y, ..}
     flatlist.map((item, index) => {
@@ -47,7 +48,11 @@ class ScatterPlot extends React.Component {
       this.tooltips.push( toolt )
     });
 
+
+    console.log("Scatterplt recieved new data");    
+    console.log(values);    
     console.log(this.tooltips);
+
     this.setValues(values);
   };
 

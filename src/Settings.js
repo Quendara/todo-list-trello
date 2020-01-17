@@ -4,6 +4,8 @@ export const Settings = {
     status: ["Open", "Planned",  "In Progress", "Corrected", "Closed", "Delegated", "Next Version" ], // jira
     epic: [], 
     prio: ["0", "2", "5", "10"],
+    effort: ["1", "2", "3", "5", "8", "13"],
+
     // start: [ "Jan", "Feb", "Mar", "April" ],    
     start: [],    
     team: ["BGL", "BCM", "URT" ],     
