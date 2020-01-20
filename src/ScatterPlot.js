@@ -63,7 +63,7 @@ class ScatterPlot extends React.Component {
     this.data = {
       datasets: [
         {
-          label: props.group_unit,
+          label: this.title, 
           fill: false,
           pointBackgroundColor: "#fff",
           pointBorderWidth: 1,
