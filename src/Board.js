@@ -143,7 +143,7 @@ class Board extends Component {
         // items fits to a column
         this.state.lists[colIdx].items.push(listitem);
       } else {
-        const newColHeader = "Unspecified";
+        let newColHeader = "Unspecified";
         if (groupItem != undefined && groupItem.length > 0) {
           newColHeader = groupItem;
         }
