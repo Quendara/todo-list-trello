@@ -3,6 +3,8 @@ import { Scatter } from "react-chartjs-2";
 import { messageService } from "./messageService";
 import { jsonToCSV, csvSoJson } from "./csvToJson";
 
+import { store } from "./messageService";
+
 class ScatterPlot extends React.Component {
   constructor(props) {
     super(props);
@@ -137,6 +139,8 @@ class ScatterPlot extends React.Component {
       } else {
       }
     });
+
+    this.setCSVData( store.getMessages() )
   }
 
   componentWillUnmount() {

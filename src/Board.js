@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 
 import { Component } from "react";
 import { messageService } from "./messageService";
+import { store } from "./messageService";
+
 import { jsonToCSV, csvSoJson } from "./csvToJson";
 
 import { Settings } from "./Settings";
@@ -82,15 +84,25 @@ class Board extends Component {
       columnGroup: "start",
       groups: []
     };
+
+    // console.log( store )
+    // console.log( ">" + store.getMessages() + "<" )
+    
   }
 
   setCSVData = csv => {
     console.log("setCSVData");
+
+    if( csv == null )
+    {
+      console.error( "CSV is null" )  
+      return
+    }
     // console.log(csv)
     this.state.csv = csv;
     const flatlist = csvSoJson(csv);
 
-    document.getElementById("inputTextarea").value = this.state.csv;
+    // document.getElementById("inputTextarea").value = this.state.csv;
 
     console.log("setJsonData");
     // console.log(flatlist)
@@ -180,6 +192,9 @@ class Board extends Component {
         // this.setState({ messages: [] });
       }
     });
+
+
+    this.setCSVData( store.getMessages() )
   }
 
   componentWillUnmount() {
@@ -270,16 +285,9 @@ class Board extends Component {
         }
       }
 
-      document.getElementById("inputTextarea").value = this.state.csv;
-
+      store.setMessages( this.state.csv )
       this.forceUpdate();
     }
-  };
-
-  readCSVFromInput = () => {
-    const csv = document.getElementById("inputTextarea");
-    // this.setCSVData(csv.value);
-    messageService.sendMessage(csv.value);
   };
 
   // Normally you would want to split things out into separate components.
@@ -401,18 +409,6 @@ class Board extends Component {
               </Droppable>
             ))}
           </DragDropContext>
-        </div>
-        <hr />
-        <div className="alert alert-primary" id="export" role="alert">
-          <button
-            className="btn btn-secondary"
-            onClick={e => this.readCSVFromInput()}
-          >
-            Update
-          </button>
-          <hr />
-
-          <textarea className="form-control" rows="10" id="inputTextarea" />
         </div>
       </div>
     );
