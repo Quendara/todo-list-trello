@@ -11,10 +11,11 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
+  IndexRoute,
   useLocation
 } from "react-router-dom";
 
-import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
+// import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
 
 // import { groupBy,uniq,map } from 'underscore'
 

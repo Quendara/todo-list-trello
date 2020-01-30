@@ -9,6 +9,13 @@ export const messageService = {
   getMessage: () => subject.asObservable(),
 };
 
+const selSubject = new Subject();
+
+export const selectedMessageService = {
+  sendMessage: message => selSubject.next({ text: message }),
+  clearMessages: () => selSubject.next(),
+  getMessage: () => selSubject.asObservable(),
+};
 
 class Messages { 
 
