@@ -47,7 +47,7 @@ class App extends Component {
             </button>
           </Link>
           <Link to="/board"> <button className="btn btn-secondary " activeClassName="active" >
-              Board
+              Boards
             </button></Link>
           <Link to="/plot"> <button className="btn btn-secondary " activeClassName="active" >
               Plot
