@@ -7,6 +7,8 @@ import FileOpen from "./FileOpen";
 import { HomePage } from "./HomePage";
 import { MessageReciever } from "./MessageReciever";
 import { ScatterPlot } from "./ScatterPlot";
+import { GanttPlot } from "./GanttPlot";
+
 import {
   BrowserRouter as Router,
   Route,
@@ -40,6 +42,7 @@ class App extends Component {
 
     return (
       <div className="container-fluid board">
+        <hr />
         <Router>
           <Link to="/import">
             <button className="btn btn-secondary " activeClassName="active" >
@@ -52,11 +55,15 @@ class App extends Component {
           <Link to="/plot"> <button className="btn btn-secondary " activeClassName="active" >
               Plot
             </button></Link>
+          <Link to="/gantt"> <button className="btn btn-secondary " activeClassName="active" >
+              Gantt
+            </button></Link>
           <hr />
           <Route exact path="/" component={FileOpen} />
           <Route exact path="/import" component={FileOpen} />
           <Route exact path="/board" component={Board} />
           <Route exact path="/plot" component={ScatterPlot} />
+          <Route exact path="/gantt" component={GanttPlot} />
         </Router>
       </div>
     );

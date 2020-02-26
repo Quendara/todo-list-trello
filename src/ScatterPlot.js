@@ -24,8 +24,8 @@ class ScatterPlot extends React.Component {
 
     this.data = {};
     this.options = {};
-    
-    this.tooltips = []
+
+    this.tooltips = [];
   }
 
   setCSVData = csv => {
@@ -35,24 +35,23 @@ class ScatterPlot extends React.Component {
     const flatlist = csvSoJson(csv);
 
     let values = [];
-    this.tooltips = []
+    this.tooltips = [];
 
     // map from simple { ... effort, prio, } ==> { x, y, ..}
     flatlist.map((item, index) => {
       values.push({
         x: item[this.xAxes],
         y: item[this.yAxes]
-        // tooltip: 
+        // tooltip:
       });
 
-      const toolt = "[" + item.id + "] "+ item.summary
+      const toolt = "[" + item.id + "] " + item.summary;
 
-      this.tooltips.push( toolt )
+      this.tooltips.push(toolt);
     });
 
-
-    console.log("Scatterplt recieved new data");    
-    console.log(values);    
+    console.log("Scatterplt recieved new data");
+    console.log(values);
     console.log(this.tooltips);
 
     this.setValues(values);
@@ -65,7 +64,7 @@ class ScatterPlot extends React.Component {
     this.data = {
       datasets: [
         {
-          label: this.title, 
+          label: this.title,
           fill: false,
           pointBackgroundColor: "#fff",
           pointBorderWidth: 1,
@@ -82,14 +81,13 @@ class ScatterPlot extends React.Component {
       tooltips: {
         callbacks: {
           label: (tooltipItem, data) => {
-            
             var label = this.tooltips[tooltipItem.index] || "";
 
             if (label) {
               label += ": ";
             }
 
-            label += "IDX:" + tooltipItem.index + ", "; 
+            label += "IDX:" + tooltipItem.index + ", ";
             label += this.xAxes + " : " + tooltipItem.xLabel + ", ";
             label += this.yAxes + " : " + tooltipItem.yLabel;
 
@@ -97,7 +95,7 @@ class ScatterPlot extends React.Component {
             // tooltipEl.innerHTML = label
 
             return label;
-          } 
+          }
         }
       },
       scales: {
@@ -126,7 +124,7 @@ class ScatterPlot extends React.Component {
 
     // this.fo
     this.forceUpdate();
-  }; 
+  };
 
   componentDidMount() {
     // subscribe to home component messages
@@ -140,7 +138,7 @@ class ScatterPlot extends React.Component {
       }
     });
 
-    this.setCSVData( store.getMessages() )
+    this.setCSVData(store.getMessages());
   }
 
   componentWillUnmount() {
@@ -160,7 +158,11 @@ class ScatterPlot extends React.Component {
     } else {
       // console.log( items )
       // plot( items )
-      return <Scatter data={this.data} options={this.options} />;
+      return (
+        <div className="container">
+          <Scatter data={this.data} options={this.options} />
+        </div>
+      );
     }
   }
 }

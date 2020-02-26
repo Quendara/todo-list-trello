@@ -6,8 +6,8 @@ export const Settings = {
     prio: ["0", "2", "5", "10"],
     effort: ["1", "2", "3", "5", "8", "13"],
 
-    // start: [ "Jan", "Feb", "Mar", "April" ],    
-    start: [],    
+    start: [ "Jan", "Feb", "Mar", "Apr" ],    
+    // start: [],    
     team: ["BGL", "BCM", "URT" ],     
   }
 };
@@ -18,6 +18,6 @@ export const SettingsSimulate = {
     epic: ["Roadmap", "UX", "Quality", "NSS", "STA", "Besson"],
     prio: ["0", "2", "5", "10"],
     effort: ["1", "2", "3", "5", "8", "13"],
-    start: [ "Jan", "Feb", "Mar", "April" ]
+    start: [ "Jan", "Feb", "Mar", "Apr" ]
   }
 };
