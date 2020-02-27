@@ -39,36 +39,36 @@ class CardTemplate extends React.Component {
   } 
 
   render() {
-    // const { item } = this.item;
+    // const { item } = this.props.item
 
     // console.log( this.item )
 
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-sm-9">{ this.item.id }</div>
+          <div className="col-sm-9">{ this.props.item.id }</div>
           <div className="col-sm-3">
-            <span className="badge badge-dark pull-right">{ this.item.effort }</span>
+            <span className="badge badge-dark pull-right">{ this.props.item.effort }</span>
           </div>
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <b>{ this.item.summary }</b>
+            <b>{ this.props.item.summary }</b>
           </div>
         </div>
 
         <div className="row">
-          <div className="col-sm-12">{ this.item.description }</div>
+          <div className="col-sm-12">{ this.props.item.description }</div>
         </div>
         <div className="row">
           <div className="col-sm-9">
-            <span className="badge badge-primary pull-right">{ this.item.epic }</span> 
-            <span className={ "badge " + ( this.badgeStatus( this.item.status )) } >
-            { this.item.status }</span>
+            <span className="badge badge-primary pull-right">{ this.props.item.epic }</span> 
+            <span className={ "badge " + ( this.badgeStatus( this.props.item.status )) } >
+            { this.props.item.status }</span>
           </div>
           <div className="col-sm-3">
-            <span className={ "badge " + ( this.badgePrio( this.item.prio )) } >
-              { this.item.prio}
+            <span className={ "badge " + ( this.badgePrio( this.props.item.prio )) } >
+              { this.props.item.prio}
             </span>
           </div>
         </div>

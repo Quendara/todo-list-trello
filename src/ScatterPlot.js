@@ -4,6 +4,10 @@ import { messageService } from "./messageService";
 import { jsonToCSV, csvSoJson } from "./csvToJson";
 
 import { store } from "./messageService";
+import { selectedMessageService } from "./messageService";
+import { SelectedCards } from "./SelectedCards";
+
+
 
 class ScatterPlot extends React.Component {
   constructor(props) {
@@ -26,19 +30,20 @@ class ScatterPlot extends React.Component {
     this.options = {};
 
     this.tooltips = [];
+    this.flatlist = []; // contains the cards
   }
 
   setCSVData = csv => {
     console.log("setCSVData");
     // console.log(csv)
     this.state.csv = csv;
-    const flatlist = csvSoJson(csv);
+    this.flatlist = csvSoJson(csv);
 
     let values = [];
     this.tooltips = [];
 
     // map from simple { ... effort, prio, } ==> { x, y, ..}
-    flatlist.map((item, index) => {
+    this.flatlist.map((item, index) => {
       values.push({
         x: item[this.xAxes],
         y: item[this.yAxes]
@@ -67,11 +72,11 @@ class ScatterPlot extends React.Component {
           label: this.title,
           fill: false,
           pointBackgroundColor: "#fff",
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          borderColor: "#F00",
+          pointBorderWidth: 2,
+          pointHoverRadius: 12,
+          borderColor: "#6B5B95",
           pointHoverBorderWidth: 2,
-          pointRadius: 6,
+          pointRadius: 9,
           data: localItems
         }
       ]
@@ -82,6 +87,8 @@ class ScatterPlot extends React.Component {
         callbacks: {
           label: (tooltipItem, data) => {
             var label = this.tooltips[tooltipItem.index] || "";
+
+            selectedMessageService.sendMessage( [ this.flatlist[tooltipItem.index]] );
 
             if (label) {
               label += ": ";
@@ -159,8 +166,14 @@ class ScatterPlot extends React.Component {
       // console.log( items )
       // plot( items )
       return (
-        <div className="container">
+        <div className="row">
+        <div className="col-sm-6">
           <Scatter data={this.data} options={this.options} />
+          </div>
+
+          <div className="col-sm-2">
+              <SelectedCards />
+            </div>
         </div>
       );
     }

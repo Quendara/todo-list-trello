@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom"; 
+import ReactDOM from "react-dom";
 
 import Board from "./Board";
 import FileOpen from "./FileOpen";
@@ -9,13 +9,14 @@ import { MessageReciever } from "./MessageReciever";
 import { ScatterPlot } from "./ScatterPlot";
 import { GanttPlot } from "./GanttPlot";
 
+
 import {
   BrowserRouter as Router,
   Route,
   Link,
   IndexRoute,
-  useLocation 
-} from "react-router-dom"; 
+  useLocation
+} from "react-router-dom";
 
 // import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
 
@@ -23,7 +24,6 @@ import {
 
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 // import { List, DatePicker, message } from "antd";
-
 
 class App extends Component {
   constructor(probs) {
@@ -45,25 +45,39 @@ class App extends Component {
         <hr />
         <Router>
           <Link to="/import">
-            <button className="btn btn-secondary " activeClassName="active" >
+            <button className="btn btn-secondary " activeClassName="active">
               Import
             </button>
           </Link>
-          <Link to="/board"> <button className="btn btn-secondary " activeClassName="active" >
+          <Link to="/board">
+            {" "}
+            <button className="btn btn-secondary " activeClassName="active">
               Board
-            </button></Link>
-          <Link to="/plot"> <button className="btn btn-secondary " activeClassName="active" >
+            </button>
+          </Link>
+          <Link to="/plot">
+            {" "}
+            <button className="btn btn-secondary " activeClassName="active">
               Plot
-            </button></Link>
-          <Link to="/gantt"> <button className="btn btn-secondary " activeClassName="active" >
+            </button>
+          </Link>
+          <Link to="/gantt">
+            {" "}
+            <button className="btn btn-secondary " activeClassName="active">
               Gantt
-            </button></Link>
+            </button>
+          </Link>
           <hr />
-          <Route exact path="/" component={FileOpen} />
-          <Route exact path="/import" component={FileOpen} />
-          <Route exact path="/board" component={Board} />
-          <Route exact path="/plot" component={ScatterPlot} />
-          <Route exact path="/gantt" component={GanttPlot} />
+
+          <div className="row">
+            <div className="col-sm-12">
+              <Route exact path="/" component={FileOpen} />
+              <Route exact path="/import" component={FileOpen} />
+              <Route exact path="/board" component={Board} />
+              <Route exact path="/plot" component={ScatterPlot} />
+              <Route exact path="/gantt" component={GanttPlot} />
+            </div>
+          </div>
         </Router>
       </div>
     );

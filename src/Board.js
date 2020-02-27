@@ -10,6 +10,8 @@ import { jsonToCSV, csvSoJson } from "./csvToJson";
 import { Settings } from "./Settings";
 import { CardTemplate } from "./CardTemplate";
 
+import { selectedMessageService } from "./messageService";
+
 // import ReactDOM from "react-dom";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -33,6 +35,10 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
   destClone.splice(droppableDestination.index, 0, removed);
 
+  // select selected item
+  selectedMessageService.sendMessage( [destClone[droppableDestination.index]] );
+  // console.log( [destClone[droppableDestination.index]]  )
+  
   const result = {};
   result[droppableSource.droppableId] = sourceClone;
   result[droppableDestination.droppableId] = destClone;
@@ -87,20 +93,20 @@ class Board extends Component {
 
     // console.log( store )
     // console.log( ">" + store.getMessages() + "<" )
-    
   }
 
   setCSVData = csv => {
     console.log("setCSVData");
 
-    if( csv == null )
-    {
-      console.error( "CSV is null" )  
-      return
+    if (csv == null) {
+      console.error("CSV is null");
+      return;
     }
     // console.log(csv)
     this.state.csv = csv;
     const flatlist = csvSoJson(csv);
+
+
 
     // document.getElementById("inputTextarea").value = this.state.csv;
 
@@ -122,7 +128,7 @@ class Board extends Component {
     this.state.lists.length = 0;
     this.state.columnGroup = columnGroup;
     this.state.groups.length = 0;
-    this.state.groups = Settings.storyAttributes[columnGroup]; // predefined/initial setting
+    this.state.groups = Array.from(Settings.storyAttributes[columnGroup] ); // predefined/initial setting
 
     // if ( Settings.storyAttributes.hasOwnProperty( columnGroup ) ){
 
@@ -137,6 +143,7 @@ class Board extends Component {
     // create predefined groups / colums
     this.state.groups.map((item, index) => {
       this.state.lists.push({ title: item, items: [] });
+      console.log( "createGroups" + item )
     });
   };
 
@@ -193,8 +200,7 @@ class Board extends Component {
       }
     });
 
-
-    this.setCSVData( store.getMessages() )
+    this.setCSVData(store.getMessages());
   }
 
   componentWillUnmount() {
@@ -262,13 +268,13 @@ class Board extends Component {
       // Export CSV
       this.state.csv = "";
 
-      let newList = []
+      let newList = [];
 
       for (let m = 0; m < this.state.lists.length; ++m) {
         try {
           if (this.state.lists[m].items.length != 0) {
             // console.log("Export : " + this.state.lists[m].items.length);
-            newList.push.apply(newList, this.state.lists[m].items )
+            newList.push.apply(newList, this.state.lists[m].items);
           } else {
             console.log("Export, no items for " + m);
           }
@@ -279,15 +285,12 @@ class Board extends Component {
       }
 
       try {
-        this.state.csv = jsonToCSV(
-              newList,
-              true
-            );
+        this.state.csv = jsonToCSV(newList, true);
       } finally {
-          // console.error(" Export, no items for " + m);
-        }
+        // console.error(" Export, no items for " + m);
+      }
 
-      store.setMessages( this.state.csv )
+      store.setMessages(this.state.csv);
       this.forceUpdate();
     }
   };
@@ -328,7 +331,7 @@ class Board extends Component {
                 }
                 onClick={e => this.setGroup("epic")}
               >
-                Epic 
+                Epic
               </button>
               <button
                 className={
@@ -338,7 +341,7 @@ class Board extends Component {
                 onClick={e => this.setGroup("team")}
               >
                 Team
-              </button> 
+              </button>
               <button
                 className={
                   "btn btn-secondary " +

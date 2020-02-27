@@ -63,9 +63,18 @@ class FileOpen extends React.Component {
 
   readCSVFromInput = () => {
     const csv = document.getElementById("inputTextarea");
+    store.setMessages( csv.value )
     // this.setCSVData(csv.value);
     // messageService.sendMessage(csv.value);
   };  
+
+  componentWillUnmount() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
+    const csv = document.getElementById("inputTextarea");
+    store.setMessages( csv.value )
+
+  }
 
   componentDidMount() {
     // subscribe to home component messages

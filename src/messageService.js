@@ -12,9 +12,9 @@ export const messageService = {
 const selSubject = new Subject();
 
 export const selectedMessageService = {
-  sendMessage: message => selSubject.next({ text: message }),
-  clearMessages: () => selSubject.next(),
-  getMessage: () => selSubject.asObservable(),
+  sendMessage:    message => selSubject.next({ json: message }),
+  clearMessages:  () => selSubject.next(),
+  getMessage:     () => selSubject.asObservable(),
 };
 
 class Messages { 
