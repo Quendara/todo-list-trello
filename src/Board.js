@@ -260,22 +260,15 @@ class Board extends Component {
       }
 
       // Export CSV
-      let addHeaderOnce = true;
       this.state.csv = "";
+
+      let newList = []
 
       for (let m = 0; m < this.state.lists.length; ++m) {
         try {
           if (this.state.lists[m].items.length != 0) {
-            console.log("Export : " + this.state.lists[m].items.length);
-
-            this.state.csv += jsonToCSV(
-              this.state.lists[m].items,
-              addHeaderOnce
-            );
-            this.state.csv += "\n\n";
-
-            addHeaderOnce = false;
-            // console.log( this.state.lists[m]);
+            // console.log("Export : " + this.state.lists[m].items.length);
+            newList.push.apply(newList, this.state.lists[m].items )
           } else {
             console.log("Export, no items for " + m);
           }
@@ -284,6 +277,15 @@ class Board extends Component {
           // console.error(" Export, no items for " + m);
         }
       }
+
+      try {
+        this.state.csv = jsonToCSV(
+              newList,
+              true
+            );
+      } finally {
+          // console.error(" Export, no items for " + m);
+        }
 
       store.setMessages( this.state.csv )
       this.forceUpdate();
