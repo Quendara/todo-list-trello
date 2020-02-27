@@ -7,7 +7,7 @@ function testCSV(jsonInput) {
   console.log("Print csv");
   console.log(csv);
 
-  const json2 = csvSoJson(csv);
+  const json2 = csvToJson(csv);
 
   console.log("Print json");
   console.log(json2);
@@ -18,7 +18,7 @@ function testCSV(jsonInput) {
   console.log(csv2);
 }
 
-export function csvSoJson(csv) {
+export function csvToJson(csv) {
   var lines = csv.split("\n");
 
   var result = [];
@@ -68,7 +68,7 @@ export function csvSoJson(csv) {
 
       result.push(obj);
     } else {
-      console.log("csvSoJson / line skipped ");
+      console.log("csvToJson / line skipped ");
     }
   }
 

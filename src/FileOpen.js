@@ -2,9 +2,12 @@ import React, { Component } from "react";
 
 import { messageService } from "./messageService";
 import { store } from "./messageService";
-import { jsonToCSV, csvSoJson } from "./csvToJson";
+import { jsonToCSV, csvToJson } from "./csvToJson";
+import { selectedMessageService } from "./messageService";
 
 import { SettingsSimulate } from "./Settings";
+import { SelectedCards } from "./SelectedCards";
+
 
 const getRandElement = arr => {
   const number = Math.floor(Math.random() * Math.floor(arr.length));
@@ -34,11 +37,14 @@ const getItemsSimple = (count, offset = 0) =>
     // description: `As user i want ${k + offset}, so that ...`,
   }));
 
+
+
+
 class FileOpen extends React.Component {
   constructor(props) {
     super(props);
 
-    this.numberOfRandonItems = 15;
+    this.numberOfRandonItems = 5;
   }
 
   loadFile = async e => {
@@ -61,11 +67,13 @@ class FileOpen extends React.Component {
     document.getElementById("inputTextarea").value = csv;
   }
 
+  // read form CSV and push to selected
   readCSVFromInput = () => {
     const csv = document.getElementById("inputTextarea");
     store.setMessages( csv.value )
-    // this.setCSVData(csv.value);
-    // messageService.sendMessage(csv.value);
+    
+    const flatlist = store.getMessagesJson()
+    selectedMessageService.sendMessage( flatlist );
   };  
 
   componentWillUnmount() {
@@ -112,31 +120,29 @@ class FileOpen extends React.Component {
   render = () => {
     return (
       <div className="row">
-        <div className="col-sm-6">
+        <div className="col-sm-8">
           <input
             type="file"
             className="btn btn-primary"
             onChange={e => this.loadFile(e)}
           />
-        </div>
-        <div className="col-sm-3">
+        <div className="btn-group" >
           <button
-            className="btn btn-secondary"
+            className="btn btn-light"
             onClick={e => this.createRand()}
           >
             Simulate
           </button>
-        </div>
-        <div className="col-sm-3">
           <button
-            className="btn btn-secondary"
+            className="btn btn-light"
             onClick={e => this.createRandSimple()}
           >
             Simulate Simple
           </button>
+          </div>
         </div>
 
-        <div className="col-sm-12">
+        <div className="col-sm-8">
         <hr /> 
           <div className="alert alert-primary" id="export" role="alert">
             <button
@@ -146,8 +152,11 @@ class FileOpen extends React.Component {
               Update
             </button>
             <hr />
-            <textarea className="form-control" rows="10" id="inputTextarea" />
+            <textarea onChange={e => this.readCSVFromInput()} className="form-control" rows="10" id="inputTextarea" />
           </div>
+        </div>
+        <div className="col-sm-4">
+          <SelectedCards />
         </div>
       </div>
     );

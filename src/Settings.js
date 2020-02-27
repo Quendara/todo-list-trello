@@ -3,8 +3,8 @@ export const Settings = {
     // status: ["Open", "Progress", "Verification", "Done"],
     // status: ["Open", "Planned",  "In Progress", "Corrected", "Closed", "Delegated", "Next Version" ], // jira
     status: ["Open", "Planned",  "In Progress", "Corrected", "Closed", "Next Version" ], // jira
-    epic: ["PR-1", "PR-2", "PR-3" ], 
-    prio: ["0", "2", "5", "10"],
+    epic: [], 
+    prio: [ "1", "2", "3", "5", "10"],
     effort: ["1", "2", "3", "5", "8", "13"],
 
     start: [ "Sprint_01", "Sprint_02", "Sprint_03", "Sprint_04", "Sprint_05" ],    

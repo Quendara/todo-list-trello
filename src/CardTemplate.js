@@ -63,6 +63,7 @@ class CardTemplate extends React.Component {
         <div className="row">
           <div className="col-sm-9">
             <span className="badge badge-primary pull-right">{ this.props.item.epic }</span> 
+            <span className="badge badge-success">{ this.props.item.team }</span> 
             <span className={ "badge " + ( this.badgeStatus( this.props.item.status )) } >
             { this.props.item.status }</span>
           </div>

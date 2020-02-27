@@ -16,7 +16,7 @@ class SelectedCards extends React.Component {
     this.subscription = selectedMessageService
       .getMessage()
       .subscribe(message => {
-        if (message) {
+        if (message && message.json.length != 0 ) { 
           this.setState({ items: [] });
           // add message to local state if not empty
           this.setState({ items: message.json });
@@ -40,8 +40,6 @@ class SelectedCards extends React.Component {
     //
     return (
       <div>
-        <h5>Selected</h5>
-        <hr />
         {this.state.items.map((item, index) => (
           <div className="card" key={"card" + index}>
             <CardTemplate item={item} />

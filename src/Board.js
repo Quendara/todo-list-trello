@@ -5,7 +5,7 @@ import { Component } from "react";
 import { messageService } from "./messageService";
 import { store } from "./messageService";
 
-import { jsonToCSV, csvSoJson } from "./csvToJson";
+import { jsonToCSV, csvToJson } from "./csvToJson";
 
 import { Settings } from "./Settings";
 import { CardTemplate } from "./CardTemplate";
@@ -95,30 +95,10 @@ class Board extends Component {
     // console.log( ">" + store.getMessages() + "<" )
   }
 
-  setCSVData = csv => {
-    console.log("setCSVData");
-
-    if (csv == null) {
-      console.error("CSV is null");
-      return;
-    }
-    // console.log(csv)
-    this.state.csv = csv;
-    const flatlist = csvSoJson(csv);
-
-
-
-    // document.getElementById("inputTextarea").value = this.state.csv;
-
-    console.log("setJsonData");
-    // console.log(flatlist)
-
-    this.setJsonData(flatlist, this.state.columnGroup);
-  };
-
   setGroup = group => {
     console.log("setGroup");
-    const flatlist = csvSoJson(this.state.csv);
+    // const flatlist = csvToJson(this.state.csv);
+    const flatlist = store.getMessagesJson()
 
     this.setJsonData(flatlist, group);
   };
@@ -192,7 +172,8 @@ class Board extends Component {
         // add message to local state if not empty
         console.log("componentDidMount recieved message");
 
-        this.setCSVData(message.text);
+        const flatlist = csvToJson( message.text );
+        this.setJsonData(flatlist, this.state.columnGroup);
         // this.setState({ messages: [...this.state.messages, message] });
       } else {
         // clear messages when empty message received
@@ -200,7 +181,9 @@ class Board extends Component {
       }
     });
 
-    this.setCSVData(store.getMessages());
+    const flatlist = store.getMessagesJson()
+    this.setJsonData(flatlist, this.state.columnGroup);
+
   }
 
   componentWillUnmount() {

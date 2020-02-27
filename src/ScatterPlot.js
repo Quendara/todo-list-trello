@@ -1,7 +1,7 @@
 import React from "react";
 import { Scatter } from "react-chartjs-2";
 import { messageService } from "./messageService";
-import { jsonToCSV, csvSoJson } from "./csvToJson";
+import { jsonToCSV, csvToJson } from "./csvToJson";
 
 import { store } from "./messageService";
 import { selectedMessageService } from "./messageService";
@@ -37,7 +37,7 @@ class ScatterPlot extends React.Component {
     console.log("setCSVData");
     // console.log(csv)
     this.state.csv = csv;
-    this.flatlist = csvSoJson(csv);
+    this.flatlist = csvToJson(csv);
 
     let values = [];
     this.tooltips = [];

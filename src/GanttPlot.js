@@ -1,7 +1,7 @@
 import React from "react";
 import { Scatter } from "react-chartjs-2";
 import { messageService } from "./messageService";
-import { jsonToCSV, csvSoJson } from "./csvToJson";
+import { jsonToCSV, csvToJson } from "./csvToJson";
 
 import { store } from "./messageService";
 
@@ -55,13 +55,14 @@ class GanttPlot extends React.Component {
     // console.log(csv)
     this.state.csv = csv;
     console.log(this.state.csv);
-    const flatlist = csvSoJson(csv);
+    const flatlist = csvToJson(csv);
 
     let localText = "gantt \n";
     localText += "dateFormat YYYY-MM-DD \n";
 
     localText += `
         Go : Sprint_01, 2020-03-01, 1d
+
         section Sprints
         Sprint 01 : Sprint_02 , after Sprint_01, 2w
         Sprint 02 : Sprint_03 , after Sprint_02, 2w
@@ -69,6 +70,7 @@ class GanttPlot extends React.Component {
         Sprint 04 : Sprint_05 , after Sprint_04, 2w
         Sprint 05 : Sprint_06 , after Sprint_05, 2w
         Sprint 06 : Sprint_07 , after Sprint_06, 2w
+
         section Feature
 `;
     // flatlist.map()
