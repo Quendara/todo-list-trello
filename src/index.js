@@ -5,7 +5,7 @@ import Board from "./Board";
 import FileOpen from "./FileOpen";
 
 import { HomePage } from "./HomePage";
-import { MessageReciever } from "./MessageReciever";
+/import { MessageReciever } from "./MessageReciever";
 import { ScatterPlot } from "./ScatterPlot";
 import { GanttPlot } from "./GanttPlot";
 
