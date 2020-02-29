@@ -3,9 +3,6 @@ import ReactDOM from "react-dom";
 
 import Board from "./Board";
 import FileOpen from "./FileOpen";
-
-import { HomePage } from "./HomePage";
-/import { MessageReciever } from "./MessageReciever";
 import { ScatterPlot } from "./ScatterPlot";
 import { GanttPlot } from "./GanttPlot";
 
@@ -18,12 +15,6 @@ import {
   useLocation
 } from "react-router-dom";
 
-// import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
-
-// import { groupBy,uniq,map } from 'underscore'
-
-// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-// import { List, DatePicker, message } from "antd";
 
 class App extends Component {
   constructor(probs) {
@@ -36,9 +27,6 @@ class App extends Component {
   }
 
   render() {
-    // <HomePage />
-    // <MessageReciever />
-    //
 
     return (
       <div className="container-fluid board">
