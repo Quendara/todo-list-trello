@@ -1,8 +1,9 @@
+import React, { Component } from "react";
 import Board from "./Board";
-import { ScatterPlot } from "./ScatterPlot";
+import { GanttPlot } from "./GanttPlot";
 import Board from "./Board";
 
-class SplittView extends Component {
+class SplitView extends Component {
   render() {
     return (
       <div>
@@ -13,4 +14,4 @@ class SplittView extends Component {
   }
 }
 
-export { SplittView }
+export { SplitView }

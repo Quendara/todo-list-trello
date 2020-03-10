@@ -7,6 +7,7 @@ import FileOpen from "./FileOpen";
 import Board from "./Board";
 import { ScatterPlot } from "./ScatterPlot";
 import { GanttPlot } from "./GanttPlot";
+import { SplitView } from "./SplitView";
 
 
 import {
@@ -57,6 +58,12 @@ class App extends Component {
               Gantt
             </button>
           </Link>
+          <Link to="/splitView">
+            {" "}
+            <button className="btn btn-secondary " activeClassName="active">
+              Splitt
+            </button>
+          </Link>          
           <hr />
 
           <div className="row">
@@ -66,6 +73,8 @@ class App extends Component {
               <Route exact path="/board" component={Board} />
               <Route exact path="/plot" component={ScatterPlot} />
               <Route exact path="/gantt" component={GanttPlot} />
+              <Route exact path="/splitView" component={SplitView} />
+              
             </div>
           </div>
         </Router>
