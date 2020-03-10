@@ -22,8 +22,8 @@ class Mermaid extends Component {
         fontSize: 12,
         fontFamily: '"Open-Sans", "sans-serif"',
         numberSectionStyles: 2,
-        axisFormat:'W.%U',
-        // axisFormat: "%Y-%m-%d"
+        // axisFormat:'W.%U',
+        axisFormat: "%Y-%m-%d"
       }
     };
 

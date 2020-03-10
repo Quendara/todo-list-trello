@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-import Board from "./Board";
+
 import FileOpen from "./FileOpen";
+
+import Board from "./Board";
 import { ScatterPlot } from "./ScatterPlot";
 import { GanttPlot } from "./GanttPlot";
 

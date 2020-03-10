@@ -7,9 +7,9 @@ export const Settings = {
     prio: [ "1", "2", "3", "5", "10"],
     effort: ["1", "2", "3", "5", "8", "13"],
 
-    start: [ "Sprint_01", "Sprint_02", "Sprint_03", "Sprint_04", "Sprint_05" ],    
+    start: [ "Sprint_01", "Sprint_02", "Sprint_03", "Sprint_04", "Sprint_05", "Sprint_06", "Sprint_07", "Sprint_08", "Sprint_09", "Sprint_10" ],    
     // start: [],    
-    team: ["BGL", "BCM", "URT" ],     
+    team: ["Kauf", "Standort", "Berater" ],     
   }
 };
 

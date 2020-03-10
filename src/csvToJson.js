@@ -44,6 +44,7 @@ export function csvToJson(csv) {
     createId = false // id column found
   }
 
+  let ifOffset = 100
 
   for (var i = 1; i < lines.length; i++) {
     var obj = {};
@@ -53,7 +54,7 @@ export function csvToJson(csv) {
     if (headers.length == currentline.length) {
 
       if( createId ){ 
-        obj['id'] = "ID-"+i
+        obj['id'] = "ID-"+ ifOffset + i
       } 
 
       for (var j = 0; j < headers.length; j++) {
