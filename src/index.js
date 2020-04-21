@@ -8,6 +8,8 @@ import Board from "./Board";
 import { ScatterPlot } from "./ScatterPlot";
 import { GanttPlot } from "./GanttPlot";
 import { SplitView } from "./SplitView";
+import { SelectedCards } from "./SelectedCards";
+
 
 
 import {
@@ -67,15 +69,17 @@ class App extends Component {
           <hr />
 
           <div className="row">
-            <div className="col-sm-12">
+            <div className="col-sm-8">
               <Route exact path="/" component={FileOpen} />
               <Route exact path="/import" component={FileOpen} />
               <Route exact path="/board" component={Board} />
               <Route exact path="/plot" component={ScatterPlot} />
               <Route exact path="/gantt" component={GanttPlot} />
               <Route exact path="/splitView" component={SplitView} />
-              
             </div>
+          <div className="col-sm-4">
+              <SelectedCards />
+            </div>            
           </div>
         </Router>
       </div>

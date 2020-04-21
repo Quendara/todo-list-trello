@@ -171,9 +171,7 @@ class ScatterPlot extends React.Component {
           <Scatter data={this.data} options={this.options} />
           </div>
 
-          <div className="col-sm-2">
-              <SelectedCards />
-            </div>
+
         </div>
       );
     }

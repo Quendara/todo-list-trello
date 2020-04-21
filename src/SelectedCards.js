@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Settings } from "./Settings";
 import { CardTemplate } from "./CardTemplate";
+
+import { CardTemplateFetch } from "./CardTemplateFetch";
 import { selectedMessageService } from "./messageService";
 
 class SelectedCards extends React.Component {
@@ -9,7 +11,7 @@ class SelectedCards extends React.Component {
 
     this.state = { items: [] };
     this.subscription = null;
-  }
+  } 
 
   componentDidMount() {
     // subscribe to home component messages
@@ -42,7 +44,7 @@ class SelectedCards extends React.Component {
       <div>
         {this.state.items.map((item, index) => (
           <div className="card" key={"card" + index}>
-            <CardTemplate item={item} />
+            <CardTemplateFetch item={item} />
             
           </div>
         ))}

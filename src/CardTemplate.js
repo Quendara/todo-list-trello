@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { selectedMessageService } from "./messageService";
 
 class CardTemplate extends React.Component {
   constructor(props) {
@@ -20,6 +21,13 @@ class CardTemplate extends React.Component {
       return 'badge-light'
     }
   } 
+
+  onClickHandle(){
+    //alert( "Test" )
+    selectedMessageService.sendMessage( [ this.props.item ] );
+
+    // http://localhost:5000/epic/31/Beschreibung
+  }
 
   badgeStatus( status )
   {
@@ -44,8 +52,8 @@ class CardTemplate extends React.Component {
     // console.log( this.item )
 
     return (
-      <div className="container-fluid">
-        <div className="row">
+      <div className="container-fluid" onClick={ () => this.onClickHandle() }>
+        <div className="row"> 
           <div className="col-sm-9">{ this.props.item.id }</div>
           <div className="col-sm-3">
             <span className="badge badge-dark pull-right">{ this.props.item.effort }</span>
